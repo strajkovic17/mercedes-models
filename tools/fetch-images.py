@@ -32,6 +32,7 @@ import re
 import sys
 import time
 import urllib.parse
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -45,8 +46,13 @@ UNSPLASH_API = 'https://api.unsplash.com'
 # Unsplash requires the app name on attribution links it sends traffic through.
 UTM = 'utm_source=mercedes_models_site&utm_medium=referral'
 # Commons asks that automated clients identify themselves and stay polite.
-UA = 'mercedes-models-site/1.0 (static site image fetcher; stdlib urllib)'
-PAUSE = 0.4
+UA = ('mercedes-models-site/1.0 '
+      '(+https://github.com/strajkovic17/mercedes-models; image fetcher)')
+# Wikimedia and Unsplash both throttle hard from shared CI addresses, so every
+# request goes through one global pacer rather than a sleep at the call site.
+MIN_INTERVAL = 1.1
+MAX_RETRIES = 5
+_last_request = 0.0
 
 # Licences we are willing to ship. Anything else (fair use, non-commercial,
 # no-derivatives) is skipped rather than quietly downloaded.
@@ -56,13 +62,51 @@ OK_LICENCE = re.compile(
 BAD_LICENCE = re.compile(r'(non[- ]?commercial|no[- ]?deriv|fair use|\bnc\b|\bnd\b)', re.I)
 
 
-def get_json(url, headers=None):
-    """GET a URL and parse JSON, with our User-Agent applied."""
+def _pace():
+    """Keep at least MIN_INTERVAL between any two outbound requests."""
+    global _last_request
+    wait = MIN_INTERVAL - (time.monotonic() - _last_request)
+    if wait > 0:
+        time.sleep(wait)
+    _last_request = time.monotonic()
+
+
+def _open(url, headers=None, timeout=45):
+    """
+    One request, retrying on the throttling and transient statuses.
+
+    429 is the norm rather than the exception from CI addresses: Wikimedia
+    rate-limits shared runner IPs hard. Retry-After is honoured when sent,
+    otherwise back off exponentially.
+    """
     hdrs = {'User-Agent': UA}
     hdrs.update(headers or {})
-    req = urllib.request.Request(url, headers=hdrs)
-    with urllib.request.urlopen(req, timeout=45) as r:
-        return json.load(r)
+    delay = 2.0
+    for attempt in range(1, MAX_RETRIES + 1):
+        _pace()
+        try:
+            return urllib.request.urlopen(
+                urllib.request.Request(url, headers=hdrs), timeout=timeout
+            ).read()
+        except urllib.error.HTTPError as exc:
+            if exc.code not in (429, 503, 502, 504) or attempt == MAX_RETRIES:
+                raise
+            retry_after = exc.headers.get('Retry-After') if exc.headers else None
+            try:
+                pause = float(retry_after) if retry_after else delay
+            except ValueError:
+                pause = delay
+            pause = min(max(pause, 1.0), 60.0)
+            print(f'    throttled ({exc.code}), waiting {pause:.0f}s '
+                  f'[attempt {attempt}/{MAX_RETRIES}]')
+            time.sleep(pause)
+            delay = min(delay * 2, 60.0)
+    raise RuntimeError('unreachable')
+
+
+def get_json(url, headers=None):
+    """GET a URL and parse JSON, with our User-Agent and retry policy applied."""
+    return json.loads(_open(url, headers))
 
 
 def api(**params):
@@ -104,42 +148,50 @@ def search_files(term, limit=14):
     return [hit['title'] for hit in data.get('query', {}).get('search', [])]
 
 
-def file_info(title, width):
-    """Metadata plus a scaled URL for one File: page, or None if unusable."""
+def files_info(titles, width):
+    """
+    Metadata for many File: pages in ONE request.
+
+    Asking per-title was the whole problem: ~15 requests per model got the run
+    throttled into uselessness. The API takes up to 50 piped titles at a time,
+    which turns a model into two requests — one search, one metadata batch.
+    """
+    if not titles:
+        return {}
     data = api(
-        action='query', titles=title, prop='imageinfo',
+        action='query', titles='|'.join(titles[:50]), prop='imageinfo',
         iiprop='url|size|extmetadata|mime', iiurlwidth=width,
     )
-    pages = data.get('query', {}).get('pages', [])
-    if not pages or 'imageinfo' not in pages[0]:
-        return None
-    info = pages[0]['imageinfo'][0]
-    if info.get('mime') not in ('image/jpeg', 'image/png'):
-        return None
-    # Reject anything too small or portrait — these sit in 16:9 cards.
-    w, h = info.get('width', 0), info.get('height', 1)
-    if w < 900 or w / max(h, 1) < 1.2:
-        return None
+    out = {}
+    for page in data.get('query', {}).get('pages', []):
+        if page.get('missing') or 'imageinfo' not in page:
+            continue
+        info = page['imageinfo'][0]
+        if info.get('mime') not in ('image/jpeg', 'image/png'):
+            continue
+        # Reject anything too small or portrait — these sit in 16:9 cards.
+        w, h = info.get('width', 0), info.get('height', 1)
+        if w < 900 or w / max(h, 1) < 1.2:
+            continue
 
-    meta = info.get('extmetadata', {})
-    licence = meta.get('LicenseShortName', {}).get('value', '')
-    if BAD_LICENCE.search(licence) or not OK_LICENCE.match(licence.strip()):
-        return None
+        meta = info.get('extmetadata', {})
+        licence = meta.get('LicenseShortName', {}).get('value', '').strip()
+        if BAD_LICENCE.search(licence) or not OK_LICENCE.match(licence):
+            continue
 
-    artist = re.sub(r'<[^>]+>', '', meta.get('Artist', {}).get('value', '')).strip()
-    return {
-        'title': title,
-        'url': info.get('thumburl') or info['url'],
-        'descurl': info.get('descriptionurl', ''),
-        'licence': licence,
-        'artist': artist or 'Unknown',
-    }
+        artist = re.sub(r'<[^>]+>', '', meta.get('Artist', {}).get('value', '')).strip()
+        out[page['title']] = {
+            'title': page['title'],
+            'url': info.get('thumburl') or info['url'],
+            'descurl': info.get('descriptionurl', ''),
+            'licence': licence,
+            'artist': artist or 'Unknown',
+        }
+    return out
 
 
 def download(url, dest):
-    req = urllib.request.Request(url, headers={'User-Agent': UA})
-    with urllib.request.urlopen(req, timeout=90) as r:
-        data = r.read()
+    data = _open(url, timeout=90)
     if len(data) < 8000:
         raise ValueError(f'suspiciously small response ({len(data)} bytes)')
     dest.write_bytes(data)
@@ -148,14 +200,11 @@ def download(url, dest):
 
 def commons_candidates(term, width):
     """Candidate photos from Wikimedia Commons for one search term."""
+    titles = search_files(term)
+    infos = files_info(titles, width)
     out = []
-    for title in search_files(term):
-        time.sleep(PAUSE)
-        try:
-            info = file_info(title, width)
-        except Exception as exc:
-            print(f'    metadata failed for {title}: {exc}')
-            continue
+    for title in titles:                 # keep the search's relevance order
+        info = infos.get(title)
         if info:
             info['key'] = title
             info['source'] = 'Wikimedia Commons'
