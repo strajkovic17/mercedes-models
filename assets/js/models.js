@@ -4,13 +4,20 @@
  * Figures are manufacturer/press specifications for the US market unless noted.
  * `price` is MSRP in USD excluding destination, taxes and options.
  *
- * ── About `image` ────────────────────────────────────────────────────────────
- * Each entry points at an official Mercedes-Benz press/media URL. These are
- * hotlinked, NOT bundled, so they are subject to link-rot and are not licensed
- * for redistribution. Every <img> falls back to a locally drawn SVG silhouette
- * (see silhouettes.js) if the remote image fails, so the site never shows a
- * broken box. To swap in your own photography, replace the `image` value here —
- * this is the only place image URLs are defined.
+ * ── About `image` and `imageSearch` ─────────────────────────────────────────
+ * `image` is a local path under assets/img/. Photographs are NOT committed to
+ * this repository — run `tools/fetch-images.py` to populate the folder with
+ * freely-licensed photos from Wikimedia Commons, which writes attribution to
+ * assets/img/CREDITS.md at the same time.
+ *
+ * `imageSearch` holds the Commons search terms for that model, most specific
+ * first; the fetcher tries each in turn until one returns a usable photograph.
+ * Adjust these if a model resolves to the wrong car.
+ *
+ * Until the folder is populated — or if a single file is missing — the <img>
+ * falls back to a locally drawn SVG silhouette (see silhouettes.js), so the
+ * page never shows a broken box. Dropping your own JPEG at the `image` path
+ * overrides everything.
  */
 
 const FUEL = {
@@ -18,8 +25,6 @@ const FUEL = {
   HYBRID: 'Plug-in Hybrid',
   ELECTRIC: 'Electric',
 };
-
-const MB_MEDIA = 'https://www.mbusa.com/content/dam/mb-nafta/us/myco/my25';
 
 const MODELS = [
   /* ───────────────────────────── Saloons, coupés & cabriolets ───────────── */
@@ -61,7 +66,8 @@ const MODELS = [
       { name: 'A 220 4MATIC', engine: '2.0L turbo I4', hp: 188, zeroToSixty: 6.7, price: 36950 },
       { name: 'AMG A 35 4MATIC', engine: '2.0L turbo I4', hp: 302, zeroToSixty: 4.7, price: 47100 },
     ],
-    image: `${MB_MEDIA}/a/sedan/gallery/2025-A-SEDAN-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/a-class-sedan.jpg',
+    imageSearch: ['Mercedes-Benz V177', 'Mercedes-Benz A-Class sedan'],
   },
   {
     id: 'c-class-sedan',
@@ -101,7 +107,8 @@ const MODELS = [
       { name: 'C 300 4MATIC', engine: '2.0L turbo I4 + EQ Boost', hp: 255, zeroToSixty: 5.7, price: 49250 },
       { name: 'AMG C 43 4MATIC', engine: '2.0L turbo I4 + electric exhaust turbo', hp: 402, zeroToSixty: 4.6, price: 62050 },
     ],
-    image: `${MB_MEDIA}/c/sedan/gallery/2025-C-SEDAN-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/c-class-sedan.jpg',
+    imageSearch: ['Mercedes-Benz W206', 'Mercedes-Benz C-Class 2022'],
   },
   {
     id: 'c-class-estate',
@@ -141,7 +148,8 @@ const MODELS = [
       { name: 'C 300 4MATIC Estate', engine: '2.0L turbo I4 + EQ Boost', hp: 255, zeroToSixty: 5.8, price: 51900 },
       { name: 'AMG C 43 4MATIC Estate', engine: '2.0L turbo I4 + electric exhaust turbo', hp: 402, zeroToSixty: 4.7, price: 64500 },
     ],
-    image: `${MB_MEDIA}/c/wagon/gallery/2025-C-WAGON-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/c-class-estate.jpg',
+    imageSearch: ['Mercedes-Benz S206', 'Mercedes-Benz C-Class estate'],
   },
   {
     id: 'e-class-sedan',
@@ -181,7 +189,8 @@ const MODELS = [
       { name: 'E 450 4MATIC', engine: '3.0L turbo I6 + EQ Boost', hp: 375, zeroToSixty: 4.5, price: 69350 },
       { name: 'AMG E 53 HYBRID 4MATIC+', engine: '3.0L turbo I6 + electric motor', hp: 577, zeroToSixty: 3.7, price: 88900 },
     ],
-    image: `${MB_MEDIA}/e/sedan/gallery/2025-E-SEDAN-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/e-class-sedan.jpg',
+    imageSearch: ['Mercedes-Benz W214', 'Mercedes-Benz E-Class 2024'],
   },
   {
     id: 'e-class-all-terrain',
@@ -219,7 +228,8 @@ const MODELS = [
     variants: [
       { name: 'E 450 All-Terrain 4MATIC', engine: '3.0L turbo I6 + EQ Boost', hp: 375, zeroToSixty: 4.7, price: 74450 },
     ],
-    image: `${MB_MEDIA}/e/all-terrain/gallery/2025-E-ALLTERRAIN-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/e-class-all-terrain.jpg',
+    imageSearch: ['Mercedes-Benz S214', 'Mercedes-Benz E-Class All-Terrain'],
   },
   {
     id: 's-class-sedan',
@@ -259,7 +269,8 @@ const MODELS = [
       { name: 'S 580 4MATIC', engine: '4.0L twin-turbo V8 + EQ Boost', hp: 496, zeroToSixty: 4.4, price: 138000 },
       { name: 'AMG S 63 E PERFORMANCE', engine: '4.0L twin-turbo V8 plug-in hybrid', hp: 791, zeroToSixty: 3.2, price: 188250 },
     ],
-    image: `${MB_MEDIA}/s/sedan/gallery/2025-S-SEDAN-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/s-class-sedan.jpg',
+    imageSearch: ['Mercedes-Benz W223', 'Mercedes-Benz S-Class 2021'],
   },
   {
     id: 'cla-coupe',
@@ -299,7 +310,8 @@ const MODELS = [
       { name: 'CLA 250 4MATIC', engine: '2.0L turbo I4', hp: 221, zeroToSixty: 6.2, price: 47500 },
       { name: 'AMG CLA 35 4MATIC', engine: '2.0L turbo I4', hp: 302, zeroToSixty: 4.8, price: 56900 },
     ],
-    image: `${MB_MEDIA}/cla/coupe/gallery/2025-CLA-COUPE-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/cla-coupe.jpg',
+    imageSearch: ['Mercedes-Benz C118', 'Mercedes-Benz CLA'],
   },
   {
     id: 'cle-coupe',
@@ -339,7 +351,8 @@ const MODELS = [
       { name: 'CLE 450 4MATIC', engine: '3.0L turbo I6 + EQ Boost', hp: 375, zeroToSixty: 4.6, price: 66500 },
       { name: 'AMG CLE 53 4MATIC+', engine: '3.0L turbo I6 plug-in hybrid', hp: 577, zeroToSixty: 3.8, price: 84000 },
     ],
-    image: `${MB_MEDIA}/cle/coupe/gallery/2025-CLE-COUPE-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/cle-coupe.jpg',
+    imageSearch: ['Mercedes-Benz C236', 'Mercedes-Benz CLE coupe'],
   },
   {
     id: 'cle-cabriolet',
@@ -378,7 +391,8 @@ const MODELS = [
       { name: 'CLE 300 4MATIC Cabriolet', engine: '2.0L turbo I4 + EQ Boost', hp: 255, zeroToSixty: 6.3, price: 65000 },
       { name: 'CLE 450 4MATIC Cabriolet', engine: '3.0L turbo I6 + EQ Boost', hp: 375, zeroToSixty: 4.7, price: 74000 },
     ],
-    image: `${MB_MEDIA}/cle/cabriolet/gallery/2025-CLE-CABRIOLET-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/cle-cabriolet.jpg',
+    imageSearch: ['Mercedes-Benz A236', 'Mercedes-Benz CLE cabriolet'],
   },
   {
     id: 'maybach-s-class',
@@ -417,7 +431,8 @@ const MODELS = [
       { name: 'Maybach S 580 4MATIC', engine: '4.0L twin-turbo V8 + EQ Boost', hp: 496, zeroToSixty: 4.8, price: 197500 },
       { name: 'Maybach S 680 4MATIC', engine: '6.0L twin-turbo V12', hp: 621, zeroToSixty: 4.4, price: 234500 },
     ],
-    image: `${MB_MEDIA}/maybach/s-sedan/gallery/2025-MAYBACH-S-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/maybach-s-class.jpg',
+    imageSearch: ['Mercedes-Maybach Z223', 'Mercedes-Maybach S-Class'],
   },
 
   /* ───────────────────────────────────── SUVs ───────────────────────────── */
@@ -459,7 +474,8 @@ const MODELS = [
       { name: 'GLA 250 4MATIC', engine: '2.0L turbo I4', hp: 221, zeroToSixty: 6.7, price: 44050 },
       { name: 'AMG GLA 35 4MATIC', engine: '2.0L turbo I4', hp: 302, zeroToSixty: 5.0, price: 53400 },
     ],
-    image: `${MB_MEDIA}/gla/suv/gallery/2025-GLA-SUV-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/gla.jpg',
+    imageSearch: ['Mercedes-Benz H247', 'Mercedes-Benz GLA'],
   },
   {
     id: 'glb',
@@ -499,7 +515,8 @@ const MODELS = [
       { name: 'GLB 250 4MATIC', engine: '2.0L turbo I4', hp: 221, zeroToSixty: 6.9, price: 46000 },
       { name: 'AMG GLB 35 4MATIC', engine: '2.0L turbo I4', hp: 302, zeroToSixty: 5.2, price: 55300 },
     ],
-    image: `${MB_MEDIA}/glb/suv/gallery/2025-GLB-SUV-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/glb.jpg',
+    imageSearch: ['Mercedes-Benz X247', 'Mercedes-Benz GLB'],
   },
   {
     id: 'glc-suv',
@@ -539,7 +556,8 @@ const MODELS = [
       { name: 'AMG GLC 43 4MATIC', engine: '2.0L turbo I4 + electric exhaust turbo', hp: 416, zeroToSixty: 4.7, price: 65000 },
       { name: 'AMG GLC 63 S E PERFORMANCE', engine: '2.0L turbo I4 plug-in hybrid', hp: 671, zeroToSixty: 3.4, price: 88000 },
     ],
-    image: `${MB_MEDIA}/glc/suv/gallery/2025-GLC-SUV-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/glc-suv.jpg',
+    imageSearch: ['Mercedes-Benz X254', 'Mercedes-Benz GLC 2023'],
   },
   {
     id: 'glc-coupe',
@@ -578,7 +596,8 @@ const MODELS = [
       { name: 'GLC 300 4MATIC Coupe', engine: '2.0L turbo I4 + EQ Boost', hp: 255, zeroToSixty: 6.2, price: 55500 },
       { name: 'AMG GLC 43 4MATIC Coupe', engine: '2.0L turbo I4 + electric exhaust turbo', hp: 416, zeroToSixty: 4.7, price: 71000 },
     ],
-    image: `${MB_MEDIA}/glc/coupe/gallery/2025-GLC-COUPE-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/glc-coupe.jpg',
+    imageSearch: ['Mercedes-Benz C254', 'Mercedes-Benz GLC Coupe'],
   },
   {
     id: 'gle-suv',
@@ -618,7 +637,8 @@ const MODELS = [
       { name: 'GLE 450 4MATIC', engine: '3.0L turbo I6 + EQ Boost', hp: 375, zeroToSixty: 5.5, price: 69000 },
       { name: 'AMG GLE 63 S 4MATIC+', engine: '4.0L twin-turbo V8 + EQ Boost', hp: 603, zeroToSixty: 3.7, price: 128000 },
     ],
-    image: `${MB_MEDIA}/gle/suv/gallery/2025-GLE-SUV-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/gle-suv.jpg',
+    imageSearch: ['Mercedes-Benz W167', 'Mercedes-Benz GLE'],
   },
   {
     id: 'gle-coupe',
@@ -658,7 +678,8 @@ const MODELS = [
       { name: 'AMG GLE 53 4MATIC+ Coupe', engine: '3.0L turbo I6 + EQ Boost', hp: 429, zeroToSixty: 4.9, price: 91000 },
       { name: 'AMG GLE 63 S 4MATIC+ Coupe', engine: '4.0L twin-turbo V8 + EQ Boost', hp: 603, zeroToSixty: 3.7, price: 134000 },
     ],
-    image: `${MB_MEDIA}/gle/coupe/gallery/2025-GLE-COUPE-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/gle-coupe.jpg',
+    imageSearch: ['Mercedes-Benz C167', 'Mercedes-Benz GLE Coupe'],
   },
   {
     id: 'gls',
@@ -698,7 +719,8 @@ const MODELS = [
       { name: 'GLS 580 4MATIC', engine: '4.0L twin-turbo V8 + EQ Boost', hp: 510, zeroToSixty: 5.2, price: 108000 },
       { name: 'AMG GLS 63 4MATIC+', engine: '4.0L twin-turbo V8 + EQ Boost', hp: 603, zeroToSixty: 4.1, price: 144000 },
     ],
-    image: `${MB_MEDIA}/gls/suv/gallery/2025-GLS-SUV-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/gls.jpg',
+    imageSearch: ['Mercedes-Benz X167', 'Mercedes-Benz GLS'],
   },
   {
     id: 'g-class',
@@ -737,7 +759,8 @@ const MODELS = [
       { name: 'G 550', engine: '3.0L turbo I6 + EQ Boost', hp: 443, zeroToSixty: 5.2, price: 148250 },
       { name: 'AMG G 63', engine: '4.0L twin-turbo V8 + EQ Boost', hp: 577, zeroToSixty: 4.3, price: 186900 },
     ],
-    image: `${MB_MEDIA}/g/suv/gallery/2025-G-SUV-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/g-class.jpg',
+    imageSearch: ['Mercedes-Benz W465', 'Mercedes-Benz G-Class 2024', 'Mercedes-Benz W463'],
   },
   {
     id: 'maybach-gls',
@@ -775,7 +798,8 @@ const MODELS = [
     variants: [
       { name: 'Maybach GLS 600 4MATIC', engine: '4.0L twin-turbo V8 + EQ Boost', hp: 550, zeroToSixty: 4.8, price: 174000 },
     ],
-    image: `${MB_MEDIA}/maybach/gls/gallery/2025-MAYBACH-GLS-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/maybach-gls.jpg',
+    imageSearch: ['Mercedes-Maybach GLS', 'Mercedes-Maybach GLS 600'],
   },
 
   /* ──────────────────────────────── Electric ────────────────────────────── */
@@ -820,7 +844,8 @@ const MODELS = [
       { name: 'EQB 300 4MATIC', engine: 'Dual motor, AWD', hp: 225, zeroToSixty: 6.2, price: 56900 },
       { name: 'EQB 350 4MATIC', engine: 'Dual motor, AWD', hp: 288, zeroToSixty: 6.0, price: 60550 },
     ],
-    image: `${MB_MEDIA}/eqb/suv/gallery/2025-EQB-SUV-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/eqb.jpg',
+    imageSearch: ['Mercedes-Benz EQB'],
   },
   {
     id: 'eqe-sedan',
@@ -863,7 +888,8 @@ const MODELS = [
       { name: 'EQE 350 4MATIC', engine: 'Dual motor, AWD', hp: 288, zeroToSixty: 5.6, price: 79050 },
       { name: 'AMG EQE 4MATIC+', engine: 'Dual motor, AWD', hp: 617, zeroToSixty: 3.2, price: 107400 },
     ],
-    image: `${MB_MEDIA}/eqe/sedan/gallery/2025-EQE-SEDAN-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/eqe-sedan.jpg',
+    imageSearch: ['Mercedes-Benz EQE', 'Mercedes-Benz V295'],
   },
   {
     id: 'eqe-suv',
@@ -906,7 +932,8 @@ const MODELS = [
       { name: 'EQE 350 4MATIC SUV', engine: 'Dual motor, AWD', hp: 288, zeroToSixty: 6.0, price: 82050 },
       { name: 'AMG EQE SUV 4MATIC+', engine: 'Dual motor, AWD', hp: 617, zeroToSixty: 3.4, price: 109300 },
     ],
-    image: `${MB_MEDIA}/eqe/suv/gallery/2025-EQE-SUV-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/eqe-suv.jpg',
+    imageSearch: ['Mercedes-Benz EQE SUV', 'Mercedes-Benz X294'],
   },
   {
     id: 'eqs-sedan',
@@ -949,7 +976,8 @@ const MODELS = [
       { name: 'EQS 450 4MATIC', engine: 'Dual motor, AWD', hp: 355, zeroToSixty: 5.3, price: 107400 },
       { name: 'EQS 580 4MATIC', engine: 'Dual motor, AWD', hp: 536, zeroToSixty: 4.1, price: 126400 },
     ],
-    image: `${MB_MEDIA}/eqs/sedan/gallery/2025-EQS-SEDAN-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/eqs-sedan.jpg',
+    imageSearch: ['Mercedes-Benz EQS', 'Mercedes-Benz V297'],
   },
   {
     id: 'eqs-suv',
@@ -992,7 +1020,8 @@ const MODELS = [
       { name: 'EQS 450 4MATIC SUV', engine: 'Dual motor, AWD', hp: 355, zeroToSixty: 5.8, price: 108550 },
       { name: 'EQS 580 4MATIC SUV', engine: 'Dual motor, AWD', hp: 536, zeroToSixty: 4.5, price: 127100 },
     ],
-    image: `${MB_MEDIA}/eqs/suv/gallery/2025-EQS-SUV-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/eqs-suv.jpg',
+    imageSearch: ['Mercedes-Benz EQS SUV', 'Mercedes-Benz X296'],
   },
   {
     id: 'maybach-eqs-suv',
@@ -1033,7 +1062,8 @@ const MODELS = [
     variants: [
       { name: 'Maybach EQS 680 SUV', engine: 'Dual motor, AWD', hp: 649, zeroToSixty: 4.1, price: 179900 },
     ],
-    image: `${MB_MEDIA}/maybach/eqs-suv/gallery/2025-MAYBACH-EQS-SUV-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/maybach-eqs-suv.jpg',
+    imageSearch: ['Mercedes-Maybach EQS SUV', 'Mercedes-Maybach EQS'],
   },
   {
     id: 'g-580-eq',
@@ -1075,7 +1105,8 @@ const MODELS = [
       { name: 'G 580 with EQ Technology', engine: 'Quad motor, 4WD', hp: 579, zeroToSixty: 4.6, price: 162650 },
       { name: 'G 580 Edition One', engine: 'Quad motor, 4WD', hp: 579, zeroToSixty: 4.6, price: 192650 },
     ],
-    image: `${MB_MEDIA}/g/eq/gallery/2025-G580-EQ-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/g-580-eq.jpg',
+    imageSearch: ['Mercedes-Benz G 580', 'Mercedes-Benz G-Class electric'],
   },
   {
     id: 'cla-eq',
@@ -1117,7 +1148,8 @@ const MODELS = [
       { name: 'CLA 250+ with EQ Technology', engine: 'Single motor, RWD', hp: 268, zeroToSixty: 6.6, price: 55000 },
       { name: 'CLA 350 4MATIC with EQ Technology', engine: 'Dual motor, AWD', hp: 349, zeroToSixty: 4.9, price: 61000 },
     ],
-    image: `${MB_MEDIA}/cla/eq/gallery/2026-CLA-EQ-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/cla-eq.jpg',
+    imageSearch: ['Mercedes-Benz CLA 2025', 'Mercedes-Benz C174'],
   },
 
   /* ─────────────────────────────── Mercedes-AMG ─────────────────────────── */
@@ -1159,7 +1191,8 @@ const MODELS = [
       { name: 'AMG SL 55 4MATIC+', engine: '4.0L twin-turbo V8', hp: 469, zeroToSixty: 3.8, price: 138650 },
       { name: 'AMG SL 63 4MATIC+', engine: '4.0L twin-turbo V8', hp: 577, zeroToSixty: 3.5, price: 164000 },
     ],
-    image: `${MB_MEDIA}/amg/sl/gallery/2025-AMG-SL-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/amg-sl.jpg',
+    imageSearch: ['Mercedes-AMG R232', 'Mercedes-Benz SL-Class 2022'],
   },
   {
     id: 'amg-gt-coupe',
@@ -1199,7 +1232,8 @@ const MODELS = [
       { name: 'AMG GT 63 4MATIC+', engine: '4.0L twin-turbo V8', hp: 577, zeroToSixty: 3.1, price: 179000 },
       { name: 'AMG GT 63 PRO 4MATIC+', engine: '4.0L twin-turbo V8', hp: 603, zeroToSixty: 3.1, price: 199900 },
     ],
-    image: `${MB_MEDIA}/amg/gt/gallery/2025-AMG-GT-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/amg-gt-coupe.jpg',
+    imageSearch: ['Mercedes-AMG GT C192', 'Mercedes-AMG GT 2024'],
   },
   {
     id: 'amg-one',
@@ -1240,7 +1274,8 @@ const MODELS = [
     variants: [
       { name: 'AMG ONE', engine: 'F1-derived 1.6L V6 hybrid', hp: 1063, zeroToSixty: 2.9, price: 2700000 },
     ],
-    image: `${MB_MEDIA}/amg/one/gallery/2025-AMG-ONE-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/amg-one.jpg',
+    imageSearch: ['Mercedes-AMG One'],
   },
   {
     id: 'amg-c63',
@@ -1281,7 +1316,8 @@ const MODELS = [
     variants: [
       { name: 'AMG C 63 S E PERFORMANCE', engine: '2.0L turbo I4 plug-in hybrid', hp: 671, zeroToSixty: 3.3, price: 87000 },
     ],
-    image: `${MB_MEDIA}/amg/c63/gallery/2025-AMG-C63-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/amg-c63.jpg',
+    imageSearch: ['Mercedes-AMG C 63 W206', 'Mercedes-AMG C 63'],
   },
   {
     id: 'amg-e53',
@@ -1322,7 +1358,8 @@ const MODELS = [
     variants: [
       { name: 'AMG E 53 HYBRID 4MATIC+', engine: '3.0L turbo I6 plug-in hybrid', hp: 577, zeroToSixty: 3.7, price: 88900 },
     ],
-    image: `${MB_MEDIA}/amg/e53/gallery/2025-AMG-E53-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/amg-e53.jpg',
+    imageSearch: ['Mercedes-AMG E 53 W214', 'Mercedes-AMG E 53'],
   },
   {
     id: 'amg-g63',
@@ -1360,7 +1397,8 @@ const MODELS = [
     variants: [
       { name: 'AMG G 63', engine: '4.0L twin-turbo V8 + EQ Boost', hp: 577, zeroToSixty: 4.3, price: 186900 },
     ],
-    image: `${MB_MEDIA}/amg/g63/gallery/2025-AMG-G63-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/amg-g63.jpg',
+    imageSearch: ['Mercedes-AMG G 63'],
   },
   {
     id: 'amg-glc63',
@@ -1401,7 +1439,8 @@ const MODELS = [
     variants: [
       { name: 'AMG GLC 63 S E PERFORMANCE', engine: '2.0L turbo I4 plug-in hybrid', hp: 671, zeroToSixty: 3.4, price: 88000 },
     ],
-    image: `${MB_MEDIA}/amg/glc63/gallery/2025-AMG-GLC63-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/amg-glc63.jpg',
+    imageSearch: ['Mercedes-AMG GLC 63'],
   },
   {
     id: 'amg-gle63',
@@ -1440,7 +1479,8 @@ const MODELS = [
       { name: 'AMG GLE 63 S 4MATIC+', engine: '4.0L twin-turbo V8 + EQ Boost', hp: 603, zeroToSixty: 3.7, price: 128000 },
       { name: 'AMG GLE 63 S 4MATIC+ Coupe', engine: '4.0L twin-turbo V8 + EQ Boost', hp: 603, zeroToSixty: 3.7, price: 134000 },
     ],
-    image: `${MB_MEDIA}/amg/gle63/gallery/2025-AMG-GLE63-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/amg-gle63.jpg',
+    imageSearch: ['Mercedes-AMG GLE 63'],
   },
   {
     id: 'amg-s63',
@@ -1481,7 +1521,8 @@ const MODELS = [
     variants: [
       { name: 'AMG S 63 E PERFORMANCE', engine: '4.0L twin-turbo V8 plug-in hybrid', hp: 791, zeroToSixty: 3.2, price: 188250 },
     ],
-    image: `${MB_MEDIA}/amg/s63/gallery/2025-AMG-S63-GALLERY-001-SET-D.jpg`,
+    image: 'assets/img/amg-s63.jpg',
+    imageSearch: ['Mercedes-AMG S 63'],
   },
 ];
 

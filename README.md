@@ -33,35 +33,56 @@ a model page and back.
 index.html · model.html · compare.html
 assets/
   css/style.css
+  img/              ← photographs, populated by tools/fetch-images.py (gitignored)
   js/
     models.js       ← all model data (the only file you need to edit for content)
     silhouettes.js  ← SVG car silhouettes + image fallback wiring
     common.js       ← formatting, compare store, header/footer
     catalog.js · model.js · compare.js
+tools/
+  fetch-images.py   ← downloads freely-licensed photos from Wikimedia Commons
 ```
 
-## Images — please read
+## Images
 
-Car photography is **hotlinked** from Mercedes-Benz media URLs rather than bundled.
-Two consequences worth knowing:
+Photographs live locally in `assets/img/<model-id>.jpg` and are **not committed** —
+they are third-party works under their own licences. Fetch them with one command:
 
-1. **The URLs are unverified.** They follow the shape of the official media CDN
-   paths, but the network policy of the environment this was built in blocks
-   `mercedes-benz.com` and `mbusa.com`, so none of them could be checked against a
-   live server. Expect some or all to 404 until they are replaced.
-2. **They are not licensed for reuse.** Hotlinked press images are fine for a
-   private reference, but swap in your own photography before publishing anything
-   public-facing.
+```sh
+python3 tools/fetch-images.py
+```
 
-Because of that, every `<img>` is wired to a locally drawn SVG silhouette that
-takes over the moment a remote image fails to load — so the site looks finished
-whether the links resolve, 404, or the page is opened with no network at all.
-There is a silhouette per body style (sedan, estate, coupé, cabriolet, roadster,
-SUV, SUV coupé, off-roader, supercar).
+That pulls a freely-licensed photograph for each of the 36 models from Wikimedia
+Commons and writes per-image attribution to `assets/img/CREDITS.md`. Standard
+library only, no `pip install`.
 
-To use your own images, edit the `image` field on each entry in
-`assets/js/models.js`. That is the only place image URLs are defined — local paths
-such as `assets/img/c-class.jpg` work equally well.
+```sh
+python3 tools/fetch-images.py --force                  # replace existing files
+python3 tools/fetch-images.py --only eqs-sedan g-class # just these models
+python3 tools/fetch-images.py --width 1600             # larger images
+```
+
+The script *searches* Commons per model rather than guessing at file paths, so it
+self-corrects as Commons changes. It skips anything non-commercial, no-derivatives,
+or too small, and won't hand the same photograph to two models. If a model resolves
+to the wrong car, widen or reorder its `imageSearch` terms in `assets/js/models.js`
+and re-run with `--only <id>`.
+
+> **Not yet run against the live API.** The environment this was built in blocks
+> `commons.wikimedia.org`, so the parser, licence filter and failure handling are
+> tested but the live fetch is not. Expect to tune a few `imageSearch` terms on the
+> first run.
+
+**Prefer your own photography?** Drop JPEGs at `assets/img/<model-id>.jpg` and
+they take precedence — the fetcher skips files that already exist.
+
+### The fallback
+
+Any model with no image file shows a locally drawn SVG silhouette instead, so the
+site looks finished before you fetch anything, with a missing file, or with no
+network at all. There is a silhouette per body style — sedan, estate, coupé,
+cabriolet, roadster, SUV, SUV coupé, off-roader and supercar. Real photos and
+silhouettes coexist happily in the same grid.
 
 ## Adding or editing a model
 

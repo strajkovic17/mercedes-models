@@ -1,0 +1,9 @@
+# Photographs are fetched by tools/fetch-images.py, not committed — they are
+# third-party works under their own licences, and CREDITS.md is generated
+# alongside them. Run the fetcher to populate this folder.
+*.jpg
+*.jpeg
+*.png
+*.webp
+CREDITS.md
+!.gitignore
