@@ -84,6 +84,36 @@ network at all. There is a silhouette per body style — sedan, estate, coupé,
 cabriolet, roadster, SUV, SUV coupé, off-roader and supercar. Real photos and
 silhouettes coexist happily in the same grid.
 
+## Deploying to GitHub Pages
+
+`.github/workflows/deploy-pages.yml` publishes the site on every push to
+`claude/mercedes-benz-models-site-7cig85`, and on manual dispatch. It needs no
+build step — the repo root is uploaded as the Pages artifact.
+
+**Pages has to be switched on once, by hand.** The workflow tries to do it itself
+(`configure-pages` with `enablement: true`), but the Actions token cannot create a
+Pages site — it fails with *"Create Pages site failed: Resource not accessible by
+integration"*. That permission belongs to the repository owner.
+
+This repository is **private**, and Pages on a private repository requires GitHub
+Pro, Team or Enterprise. On a free account, make the repository public first.
+
+1. **Settings → Pages**
+2. **Source: GitHub Actions**
+3. **Actions → Deploy to GitHub Pages → Run workflow**, choosing the branch above
+
+The site then lands at:
+
+```
+https://strajkovic17.github.io/mercedes-models/
+```
+
+Pushes to the branch redeploy automatically from that point on.
+
+Photographs are gitignored, so a deployed site shows SVG silhouettes until you run
+the fetcher and commit the results — or drop the images in and remove `*.jpg` from
+`assets/img/.gitignore`.
+
 ## Adding or editing a model
 
 Append an object to `MODELS` in `assets/js/models.js`. The filter dropdowns, hero
