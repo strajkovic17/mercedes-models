@@ -1,0 +1,74 @@
+name: Fetch model photographs
+
+# Runs tools/fetch-images.py on a GitHub runner and commits the result, so the
+# photographs reach the deployed site without anyone running it locally.
+#
+# commons needs no credentials. unsplash needs an UNSPLASH_ACCESS_KEY secret
+# (Settings -> Secrets and variables -> Actions), and is stock photography, so
+# it will not reliably return the specific model named on each card.
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: Where to fetch from
+        type: choice
+        options: [commons, unsplash]
+        default: commons
+      width:
+        description: Image width in pixels
+        default: '1400'
+      force:
+        description: Replace photographs that are already committed
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-images
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Inputs go through the environment rather than being interpolated into
+      # the script, so nothing in them can be read as shell.
+      - name: Fetch photographs
+        env:
+          SOURCE: ${{ inputs.source }}
+          WIDTH: ${{ inputs.width }}
+          FORCE: ${{ inputs.force }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        run: |
+          args=(--source "$SOURCE" --width "$WIDTH")
+          if [ "$FORCE" = "true" ]; then args+=(--force); fi
+          python3 tools/fetch-images.py "${args[@]}"
+
+      - name: Report what landed
+        run: |
+          echo "### Photographs fetched" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          ls -la assets/img/ >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit
+        env:
+          SOURCE: ${{ inputs.source }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/img
+          if git diff --staged --quiet; then
+            echo "No new photographs — nothing to commit."
+            exit 0
+          fi
+          git commit -m "Add model photographs fetched from $SOURCE"
+          git push

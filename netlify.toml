@@ -1,0 +1,26 @@
+# Netlify configuration.
+#
+# The site is plain static files at the repository root — no build step, no
+# dependencies — so Netlify only needs to be told what to publish.
+
+[build]
+  publish = "."
+  command = ""
+
+# Long cache for fingerprint-free static assets is a bad idea, so keep it
+# modest: a week for images, an hour for the CSS and JS that change with edits.
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
