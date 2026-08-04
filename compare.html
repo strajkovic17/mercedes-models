@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compare Models — Mercedes-Benz</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div id="header"></div>
+
+  <main class="shell">
+    <section style="padding:56px 0 0">
+      <p class="eyebrow">Side by side</p>
+      <h1 style="font-size:clamp(30px,4.5vw,46px);margin:14px 0 12px">Compare the range</h1>
+      <p style="color:var(--silver-dim);max-width:60ch;margin:0">
+        Choose up to three models. The strongest figure in each row is highlighted —
+        for price, efficiency and 0–60 mph, lower wins.
+      </p>
+    </section>
+
+    <div class="compare-picker" id="picker"></div>
+    <div class="table-scroll" id="tableWrap"></div>
+    <p class="compare-note" id="note"></p>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="assets/js/models.js"></script>
+  <script src="assets/js/silhouettes.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/compare.js"></script>
+</body>
+</html>

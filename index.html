@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mercedes-Benz — The Complete Model Range</title>
+  <meta name="description" content="Every current Mercedes-Benz passenger car, with specifications, variants and side-by-side comparison.">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div id="header"></div>
+
+  <section class="hero">
+    <div class="shell">
+      <p class="eyebrow">The current range</p>
+      <h1>Every Mercedes-Benz, in one place.</h1>
+      <p>
+        Saloons, estates, coupés, cabriolets, SUVs, off-roaders and the full EQ
+        electric line-up — alongside Mercedes-AMG and Mercedes-Maybach. Filter by
+        body style, powertrain or budget, then compare up to three side by side.
+      </p>
+      <div class="hero-stats">
+        <div><span id="statModels">—</span><small>Models</small></div>
+        <div><span id="statVariants">—</span><small>Variants</small></div>
+        <div><span id="statElectric">—</span><small>Fully electric</small></div>
+        <div><span id="statPower">—</span><small>Peak output, hp</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="filters">
+    <div class="shell">
+      <div class="filters-row">
+        <div class="search-field">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="M20 20l-4-4"></path>
+          </svg>
+          <input type="search" id="search" aria-label="Search models"
+                 placeholder="Search a model, series or engine…" autocomplete="off">
+        </div>
+        <select id="filterBody" aria-label="Body style"><option value="">All body styles</option></select>
+        <select id="filterFuel" aria-label="Powertrain"><option value="">All powertrains</option></select>
+        <select id="filterFamily" aria-label="Family"><option value="">All families</option></select>
+        <select id="filterSeats" aria-label="Seats">
+          <option value="">Any seat count</option>
+          <option value="2">2 seats</option>
+          <option value="4">4+ seats</option>
+          <option value="5">5+ seats</option>
+          <option value="7">7 seats</option>
+        </select>
+        <select id="filterPrice" aria-label="Price">
+          <option value="">Any price</option>
+          <option value="0-50000">Under $50,000</option>
+          <option value="50000-80000">$50,000 – $80,000</option>
+          <option value="80000-150000">$80,000 – $150,000</option>
+          <option value="150000-99999999">$150,000 and above</option>
+        </select>
+        <select id="sortBy" aria-label="Sort">
+          <option value="name">Sort: A–Z</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="price-desc">Price: high to low</option>
+          <option value="power">Most powerful</option>
+          <option value="quick">Quickest to 60</option>
+        </select>
+      </div>
+      <div class="filter-meta">
+        <span id="resultCount">—</span>
+        <button class="btn-reset" id="btnReset" type="button" hidden>Clear all</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="shell">
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="assets/js/models.js"></script>
+  <script src="assets/js/silhouettes.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/catalog.js"></script>
+</body>
+</html>
