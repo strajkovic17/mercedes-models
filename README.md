@@ -52,15 +52,38 @@ they are third-party works under their own licences. Fetch them with one command
 python3 tools/fetch-images.py
 ```
 
-That pulls a freely-licensed photograph for each of the 36 models from Wikimedia
-Commons and writes per-image attribution to `assets/img/CREDITS.md`. Standard
-library only, no `pip install`.
+That pulls a photograph for each of the 36 models and writes per-image attribution
+to `assets/img/CREDITS.md`. Standard library only, no `pip install`.
 
 ```sh
 python3 tools/fetch-images.py --force                  # replace existing files
 python3 tools/fetch-images.py --only eqs-sedan g-class # just these models
 python3 tools/fetch-images.py --width 1600             # larger images
+python3 tools/fetch-images.py --source unsplash        # see below
 ```
+
+### Choosing a source
+
+| | `commons` (default) | `unsplash` |
+| --- | --- | --- |
+| Matches the right model | **Yes** — files are catalogued by chassis code (W206, X254, R232) | **No** — stock search, returns Mercedes photos but not reliably *that* model or year |
+| Photograph quality | Mixed; car-spotter and press shots | **Excellent**, consistently well lit and composed |
+| Licence | CC BY / BY-SA / CC0 / public domain, filtered | Unsplash License — free commercial use |
+| Setup | none | free API key |
+
+Use `commons` for a catalogue where each card names a specific car. Use `unsplash`
+if you care more about how the page looks than about the GLC card showing an actual
+GLC — and expect to hand-pick some replacements.
+
+Unsplash needs a free key from <https://unsplash.com/developers>:
+
+```sh
+export UNSPLASH_ACCESS_KEY=your_access_key
+python3 tools/fetch-images.py --source unsplash --force
+```
+
+The Unsplash path attributes every photographer in `CREDITS.md` with a referral
+link and pings the API's download endpoint, both required by their API terms.
 
 The script *searches* Commons per model rather than guessing at file paths, so it
 self-corrects as Commons changes. It skips anything non-commercial, no-derivatives,
@@ -68,10 +91,10 @@ or too small, and won't hand the same photograph to two models. If a model resol
 to the wrong car, widen or reorder its `imageSearch` terms in `assets/js/models.js`
 and re-run with `--only <id>`.
 
-> **Not yet run against the live API.** The environment this was built in blocks
-> `commons.wikimedia.org`, so the parser, licence filter and failure handling are
-> tested but the live fetch is not. Expect to tune a few `imageSearch` terms on the
-> first run.
+> **Not yet run against a live API.** The environment this was built in blocks
+> `commons.wikimedia.org` and `unsplash.com` alike, so the parsers, licence filter,
+> query building and failure handling are tested but no live fetch is. Expect to
+> tune a few search terms on the first run.
 
 **Prefer your own photography?** Drop JPEGs at `assets/img/<model-id>.jpg` and
 they take precedence — the fetcher skips files that already exist.

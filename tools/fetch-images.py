@@ -2,22 +2,32 @@
 """
 Populate assets/img/ with real photographs of each model.
 
-Photographs come from Wikimedia Commons, which is queried through its public
-API — the script searches for each model rather than guessing at file paths, so
-it self-corrects when Commons reorganises. Only freely-licensed files are kept,
-and attribution for every downloaded image is written to assets/img/CREDITS.md.
+Two sources, chosen with --source:
 
-    python3 tools/fetch-images.py              # fetch everything still missing
-    python3 tools/fetch-images.py --force      # re-fetch, replacing existing
+  commons   (default) Wikimedia Commons. Files are catalogued by chassis code
+            — W206, X254, R232 — so a search reliably returns the RIGHT car.
+            Only free licences are kept (CC BY/BY-SA/CC0/public domain).
+
+  unsplash  Unsplash. Far better photography, but it is stock: searching
+            "Mercedes-Benz GLC" returns attractive Mercedes photos, not
+            necessarily a GLC, and never a specific model year. Good for
+            atmosphere, unreliable for a catalogue that names each car.
+            Needs a free API key in UNSPLASH_ACCESS_KEY.
+
+    python3 tools/fetch-images.py                      # commons, missing only
+    python3 tools/fetch-images.py --source unsplash
+    python3 tools/fetch-images.py --force              # replace existing
     python3 tools/fetch-images.py --only eqs-sedan g-class
-    python3 tools/fetch-images.py --width 1600 # default 1400
+    python3 tools/fetch-images.py --width 1600         # default 1400
 
-Standard library only — no pip install. Needs unrestricted network access to
-commons.wikimedia.org, so run it on your own machine.
+Attribution for everything downloaded is written to assets/img/CREDITS.md.
+Standard library only — no pip install. Needs unrestricted network access, so
+run it on your own machine.
 """
 
 import argparse
 import json
+import os
 import re
 import sys
 import time
@@ -31,6 +41,9 @@ IMG_DIR = ROOT / 'assets' / 'img'
 CREDITS = IMG_DIR / 'CREDITS.md'
 
 API = 'https://commons.wikimedia.org/w/api.php'
+UNSPLASH_API = 'https://api.unsplash.com'
+# Unsplash requires the app name on attribution links it sends traffic through.
+UTM = 'utm_source=mercedes_models_site&utm_medium=referral'
 # Commons asks that automated clients identify themselves and stay polite.
 UA = 'mercedes-models-site/1.0 (static site image fetcher; stdlib urllib)'
 PAUSE = 0.4
@@ -43,14 +56,20 @@ OK_LICENCE = re.compile(
 BAD_LICENCE = re.compile(r'(non[- ]?commercial|no[- ]?deriv|fair use|\bnc\b|\bnd\b)', re.I)
 
 
+def get_json(url, headers=None):
+    """GET a URL and parse JSON, with our User-Agent applied."""
+    hdrs = {'User-Agent': UA}
+    hdrs.update(headers or {})
+    req = urllib.request.Request(url, headers=hdrs)
+    with urllib.request.urlopen(req, timeout=45) as r:
+        return json.load(r)
+
+
 def api(**params):
     """One Commons API call, returning parsed JSON."""
     params.setdefault('format', 'json')
     params.setdefault('formatversion', '2')
-    url = API + '?' + urllib.parse.urlencode(params)
-    req = urllib.request.Request(url, headers={'User-Agent': UA})
-    with urllib.request.urlopen(req, timeout=45) as r:
-        return json.load(r)
+    return get_json(API + '?' + urllib.parse.urlencode(params))
 
 
 def parse_models():
@@ -127,33 +146,132 @@ def download(url, dest):
     return len(data)
 
 
-def fetch_one(model, width, seen):
-    """Walk the model's search terms until one yields a usable photo."""
-    for term in model['terms']:
+def commons_candidates(term, width):
+    """Candidate photos from Wikimedia Commons for one search term."""
+    out = []
+    for title in search_files(term):
+        time.sleep(PAUSE)
         try:
-            titles = search_files(term)
+            info = file_info(title, width)
+        except Exception as exc:
+            print(f'    metadata failed for {title}: {exc}')
+            continue
+        if info:
+            info['key'] = title
+            info['source'] = 'Wikimedia Commons'
+            out.append(info)
+    return out
+
+
+def unsplash_terms(model):
+    """
+    Unsplash queries built from the model's NAME, not its chassis code.
+    Nobody tags a stock photo "S206", so the Commons terms are useless here.
+    """
+    name = model['name']
+    # Names like "Mercedes-AMG GT Coupe" already carry the marque; only the
+    # bare ones ("GLC SUV", "EQS Sedan") need it prepended.
+    if name.startswith('Mercedes'):
+        terms = [name, ' '.join(name.split()[:2])]
+    else:
+        terms = [f'Mercedes-Benz {name}', f'Mercedes-Benz {name.split()[0]}']
+    terms.append('Mercedes-Benz car')
+    seen, ordered = set(), []
+    for t in terms:
+        if t not in seen:
+            seen.add(t)
+            ordered.append(t)
+    return ordered
+
+
+def unsplash_candidates(term, width):
+    """
+    Candidate photos from Unsplash for one search term.
+
+    Everything on Unsplash is under the Unsplash License (free commercial use,
+    no permission needed), so there is no licence filtering to do — but the API
+    terms require attribution and a download-endpoint ping, both handled here.
+    """
+    key = os.environ.get('UNSPLASH_ACCESS_KEY', '').strip()
+    if not key:
+        raise RuntimeError(
+            'UNSPLASH_ACCESS_KEY is not set — register a free app at '
+            'https://unsplash.com/developers and export the Access Key'
+        )
+    q = urllib.parse.urlencode({
+        'query': term, 'per_page': 12, 'orientation': 'landscape',
+        'content_filter': 'high',
+    })
+    data = get_json(f'{UNSPLASH_API}/search/photos?{q}',
+                    headers={'Authorization': f'Client-ID {key}',
+                             'Accept-Version': 'v1'})
+    out = []
+    for photo in data.get('results', []):
+        if photo.get('width', 0) < 900:
+            continue
+        user = photo.get('user') or {}
+        name = user.get('name') or 'Unknown'
+        profile = f"{user.get('links', {}).get('html', '')}?{UTM}"
+        # raw + w= lets us request exactly the width we want.
+        raw = (photo.get('urls') or {}).get('raw', '')
+        out.append({
+            'key': photo['id'],
+            'title': (photo.get('description')
+                      or photo.get('alt_description') or photo['id'])[:90],
+            'url': f'{raw}&w={width}&fm=jpg&q=85' if raw else photo['urls']['regular'],
+            'descurl': f"{photo.get('links', {}).get('html', '')}?{UTM}",
+            'licence': 'Unsplash License',
+            'artist': f'{name} ({profile})',
+            'source': 'Unsplash',
+            'download_location': (photo.get('links') or {}).get('download_location', ''),
+        })
+    return out
+
+
+def unsplash_ping_download(info):
+    """
+    Unsplash's API terms require hitting download_location when a photo is
+    actually downloaded. It credits the photographer; skipping it is a TOS
+    violation, so a failure here is reported rather than swallowed.
+    """
+    loc = info.get('download_location')
+    if not loc:
+        return
+    key = os.environ.get('UNSPLASH_ACCESS_KEY', '').strip()
+    try:
+        get_json(loc, headers={'Authorization': f'Client-ID {key}'})
+    except Exception as exc:
+        print(f'    warning: download ping failed ({exc})')
+
+
+def fetch_one(model, width, seen, source):
+    """Walk the model's search terms until one yields a usable photo."""
+    if source == 'unsplash':
+        terms, produce = unsplash_terms(model), unsplash_candidates
+    else:
+        terms, produce = model['terms'], commons_candidates
+
+    for term in terms:
+        try:
+            candidates = produce(term, width)
+        except RuntimeError:
+            raise  # missing API key — fatal, not worth retrying 36 times
         except Exception as exc:
             print(f'    search failed for "{term}": {exc}')
             continue
-        for title in titles:
-            if title in seen:
+        for info in candidates:
+            if info['key'] in seen:
                 continue  # don't give two models the same photograph
-            time.sleep(PAUSE)
-            try:
-                info = file_info(title, width)
-            except Exception as exc:
-                print(f'    metadata failed for {title}: {exc}')
-                continue
-            if not info:
-                continue
             dest = IMG_DIR / f"{model['id']}.jpg"
             try:
                 size = download(info['url'], dest)
             except Exception as exc:
-                print(f'    download failed for {title}: {exc}')
+                print(f"    download failed for {info['key']}: {exc}")
                 continue
-            seen.add(title)
-            print(f"    ✓ {size // 1024} KB — {title}  [{info['licence']}]")
+            if source == 'unsplash':
+                unsplash_ping_download(info)
+            seen.add(info['key'])
+            print(f"    ✓ {size // 1024} KB — {info['title']}  [{info['licence']}]")
             return info
     return None
 
@@ -182,7 +300,20 @@ def main():
     ap.add_argument('--force', action='store_true', help='re-fetch images that already exist')
     ap.add_argument('--only', nargs='+', metavar='ID', help='limit to these model ids')
     ap.add_argument('--width', type=int, default=1400, help='target width in pixels')
+    ap.add_argument('--source', choices=('commons', 'unsplash'), default='commons',
+                    help='where to fetch from (default: commons)')
     args = ap.parse_args()
+
+    if args.source == 'unsplash':
+        if not os.environ.get('UNSPLASH_ACCESS_KEY', '').strip():
+            sys.exit(
+                'UNSPLASH_ACCESS_KEY is not set.\n'
+                'Register a free app at https://unsplash.com/developers, then:\n'
+                '  export UNSPLASH_ACCESS_KEY=your_access_key'
+            )
+        print('Note: Unsplash is stock photography. It will return handsome\n'
+              '      Mercedes photos, but not reliably the specific model or\n'
+              '      model year named on each card. Check the results.\n')
 
     models = parse_models()
     if not models:
@@ -195,7 +326,8 @@ def main():
         models = [m for m in models if m['id'] in wanted]
 
     IMG_DIR.mkdir(parents=True, exist_ok=True)
-    print(f'Fetching photographs for {len(models)} model(s) into {IMG_DIR}\n')
+    print(f'Fetching photographs for {len(models)} model(s) '
+          f'from {args.source} into {IMG_DIR}\n')
 
     credits, seen, missed = {}, set(), []
     for i, model in enumerate(models, 1):
@@ -204,7 +336,10 @@ def main():
         if dest.exists() and not args.force:
             print('    already present, skipping (use --force to replace)')
             continue
-        info = fetch_one(model, args.width, seen)
+        try:
+            info = fetch_one(model, args.width, seen, args.source)
+        except RuntimeError as exc:
+            sys.exit(f'\n{exc}')
         if info:
             credits[model['id']] = info
         else:
@@ -221,7 +356,12 @@ def main():
         print('Missing (the SVG silhouette will show for these):')
         for mid in missed:
             print(f'  - {mid}')
-        print('\nTry widening that model\'s imageSearch terms in assets/js/models.js.')
+        if args.source == 'commons':
+            print('\nTry widening that model\'s imageSearch terms in '
+                  'assets/js/models.js,\nor retry with --source unsplash.')
+        else:
+            print('\nTry --source commons, which matches models far more '
+                  'accurately.')
 
 
 if __name__ == '__main__':
