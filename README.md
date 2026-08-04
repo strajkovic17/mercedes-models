@@ -133,9 +133,18 @@ https://strajkovic17.github.io/mercedes-models/
 
 Pushes to the branch redeploy automatically from that point on.
 
-Photographs are gitignored, so a deployed site shows SVG silhouettes until you run
-the fetcher and commit the results — or drop the images in and remove `*.jpg` from
-`assets/img/.gitignore`.
+### Deploying with photographs
+
+Pages serves whatever is committed, so the images have to be in the repository:
+
+```sh
+python3 tools/fetch-images.py            # or --source unsplash
+git add assets/img && git commit -m "Add model photographs" && git push
+```
+
+The push redeploys automatically. Until that happens the deployed site shows SVG
+silhouettes — it is complete and navigable either way, just illustrated rather
+than photographed.
 
 ## Adding or editing a model
 

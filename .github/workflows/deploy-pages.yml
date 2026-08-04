@@ -26,11 +26,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # enablement: true turns Pages on via the API, so the repository does not
-      # need the switch flipped by hand in Settings first.
+      # No enablement: true here. Creating a Pages site is not available to the
+      # Actions token ("Resource not accessible by integration"), and asking for
+      # it fails the whole job. Pages must be switched on once by the repository
+      # owner: Settings -> Pages -> Source: GitHub Actions.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       # The site is plain static files at the repo root — nothing to build.
       # Photographs are not committed; models without one fall back to their
