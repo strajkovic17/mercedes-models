@@ -9,6 +9,18 @@ derivative works carry the same licence. Keep this file alongside them.
 
 | Model | Photographer | Licence | Source |
 | --- | --- | --- | --- |
+| `170-v` | Silar | CC BY-SA 4.0 | [File:02024 1417 Mercedes-Benz W136.jpg](https://commons.wikimedia.org/wiki/File:02024_1417_Mercedes-Benz_W136.jpg) |
+| `190-sl` | Berthold Werner | CC BY-SA 3.0 | [File:Mercedes Benz W121 BW 2016-09-03 14-53-06.jpg](https://commons.wikimedia.org/wiki/File:Mercedes_Benz_W121_BW_2016-09-03_14-53-06.jpg) |
+| `190e-evo2` | Morio | CC BY-SA 3.0 | [File:Mercedes-Benz 190E Evolution II DTM top Mercedes-Benz Museum.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_190E_Evolution_II_DTM_top_Mercedes-Benz_Museum.jpg) |
+| `220-se-coupe` | Kev22 | CC BY-SA 4.0 | [File:Mercedes-Benz 220S (W111) - Coupe Florio 2013 (avant).jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_220S_(W111)_-_Coupe_Florio_2013_(avant).jpg) |
+| `260-d` | For a gallery of some more of my uploaded pictures see:  here. | CC0 | [File:Mercedes-Benz 260 D Pullmann. side. Spielvogel.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_260_D_Pullmann._side._Spielvogel.jpg) |
+| `280-sl-pagoda` | Berthold Werner | CC BY-SA 3.0 | [File:Mercedes Benz W121 und W113 BW 2016-09-03 14-55-08.jpg](https://commons.wikimedia.org/wiki/File:Mercedes_Benz_W121_und_W113_BW_2016-09-03_14-55-08.jpg) |
+| `300-adenauer` | Alexander Migl | CC BY-SA 4.0 | [File:Mercedes-Benz W186 Cabriolet D Classic-Gala 2021 1X7A0252.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W186_Cabriolet_D_Classic-Gala_2021_1X7A0252.jpg) |
+| `300-sel-63` | Mliu92 | CC BY-SA 3.0 | [File:Mercedes Benz 300SEL 6.3 (W109).jpg](https://commons.wikimedia.org/wiki/File:Mercedes_Benz_300SEL_6.3_(W109).jpg) |
+| `300-sl-gullwing` | Spurzem - Lothar Spurzem | CC BY-SA 2.0 de | [File:Mercedes-Benz 300 SLS Cockpit (Umbau SL Roadster) 2009-08-07.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_300_SLS_Cockpit_(Umbau_SL_Roadster)_2009-08-07.jpg) |
+| `450-sel-69` | Ermell | CC BY-SA 4.0 | [File:Mercedes-Benz W116 Sachs Franken Classic 2018 P5201299.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W116_Sachs_Franken_Classic_2018_P5201299.jpg) |
+| `500e-w124` | Yu Chu Chin | CC BY-SA 4.0 | [File:Mercedes-Benz 500E in Bandar Seri Begawan, Brunei.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_500E_in_Bandar_Seri_Begawan,_Brunei.jpg) |
+| `600-grosser` | Alexander Migl | CC BY-SA 4.0 | [File:Mercedes-Benz W100 600 Classic-Gala 2021 1X7A0194.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W100_600_Classic-Gala_2021_1X7A0194.jpg) |
 | `a-class-sedan` | Alexander-93 | CC BY-SA 4.0 | [File:Mercedes-Benz A 250 e (V177, 2022) 1X7A1651.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_A_250_e_(V177,_2022) |
 | `amg-c63` | Alexander-93 | CC BY-SA 4.0 | [File:Mercedes-AMG C 63 (W206) IMG 0305.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-AMG_C_63_(W206) |
 | `amg-e53` | Alexander-93 | CC BY-SA 4.0 | [File:Mercedes-AMG W214 53 Hybrid IMG 1305.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-AMG_W214_53_Hybrid_IMG_1305.jpg) |
@@ -25,6 +37,7 @@ derivative works carry the same licence. Keep this file alongside them.
 | `cla-eq` | JustAnotherCarDesigner | CC0 | [File:Mercedes-Benz Electric CLA 001.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_Electric_CLA_001.jpg) |
 | `cle-cabriolet` | Alexander-93 | CC BY-SA 4.0 | [File:Mercedes-Benz A236 IMG 0490.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_A236_IMG_0490.jpg) |
 | `cle-coupe` | Alexander-93 | CC BY-SA 4.0 | [File:Mercedes-Benz C236 1X7A1685.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_C236_1X7A1685.jpg) |
+| `clk-gtr` | Tony Harrison from Farnborough, UK | CC BY-SA 2.0 | [File:Mercedes-Benz CLK GTR 10.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_CLK_GTR_10.jpg) |
 | `e-class-all-terrain` | Alexander-93 | CC BY-SA 4.0 | [File:Mercedes-Benz S214 300e 1X7A1754.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_S214_300e_1X7A1754.jpg) |
 | `e-class-sedan` | Alexander-93 | CC BY-SA 4.0 | [File:Mercedes-Benz W214 1X7A1843.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W214_1X7A1843.jpg) |
 | `eqb` | Dinkun Chen | CC BY-SA 4.0 | [File:MERCEDES-EQ EQB China (4).jpg](https://commons.wikimedia.org/wiki/File:MERCEDES-EQ_EQB_China_(4) |
@@ -34,6 +47,7 @@ derivative works carry the same licence. Keep this file alongside them.
 | `eqs-suv` | Alexander-93 | CC BY-SA 4.0 | [File:Mercedes-Benz X296 1X7A1725.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_X296_1X7A1725.jpg) |
 | `g-580-eq` | Alexander Migl | CC BY-SA 4.0 | [File:Mercedes-Benz G 580 with EQ Technology DSC 8257.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_G_580_with_EQ_Technology_DSC_8257.jpg) |
 | `g-class` | Alexander Migl | CC BY-SA 4.0 | [File:Mercedes-Benz W465 DSC 8927.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W465_DSC_8927.jpg) |
+| `g-w460` | Matti Blume | CC BY-SA 4.0 | [File:Mercedes-Benz 230 G, Techno-Classica 2018, Essen (IMG 9831).jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_230_G,_Techno-Classica_2018,_Essen_(IMG_9831).jpg) |
 | `gla` | Alexander-93 | CC BY-SA 4.0 | [File:Mercedes-Benz H247 (2023) IMG 8549.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_H247_(2023) |
 | `glb` | Alexander-93 | CC BY-SA 4.0 | [File:Mercedes-Benz X247 (2023) IMG 8666.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_X247_(2023) |
 | `glc-coupe` | Alexander-93 | CC BY-SA 4.0 | [File:Mercedes-Benz C254 220d 1X7A1738.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_C254_220d_1X7A1738.jpg) |
@@ -45,5 +59,13 @@ derivative works carry the same licence. Keep this file alongside them.
 | `maybach-gls` | Dinkun Chen | CC BY-SA 4.0 | [File:MERCEDES MAYBACH GLS China.jpg](https://commons.wikimedia.org/wiki/File:MERCEDES_MAYBACH_GLS_China.jpg) |
 | `maybach-s-class` | Alexander Migl | CC BY-SA 4.0 | [File:Mercedes-Maybach Z223 680 IAA 2021 1X7A0287.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Maybach_Z223_680_IAA_2021_1X7A0287.jpg) |
 | `s-class-sedan` | Alexander Migl | CC BY-SA 4.0 | [File:Mercedes-Benz W223 IAA 2021 1X7A0206.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W223_IAA_2021_1X7A0206.jpg) |
+| `s-w126` | Brocken Inaglory | CC BY-SA 3.0 | [File:Artcarfest in San Francisco 1.jpg](https://commons.wikimedia.org/wiki/File:Artcarfest_in_San_Francisco_1.jpg) |
+| `s-w140` | Alexander Migl | CC BY-SA 4.0 | [File:Mercedes-Benz W140 Classic-Gala 2022 1X7A0311.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W140_Classic-Gala_2022_1X7A0311.jpg) |
+| `sl-r107` | Ermell | CC BY-SA 4.0 | [File:Mercedes-Benz 280 SL (R 107) P6280184.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_280_SL_(R_107)_P6280184.jpg) |
+| `sl-r129` | Alexander Migl | CC BY-SA 4.0 | [File:Mercedes-Benz R129 (1989-1995) Classic-Gala 2022 1X7A0232 (cropped).jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_R129_(1989-1995)_Classic-Gala_2022_1X7A0232_(cropped).jpg) |
+| `slr-mclaren` | user:AngMoKio | CC BY-SA 2.5 | [File:Mercedes SLR C199 2007 amk.jpg](https://commons.wikimedia.org/wiki/File:Mercedes_SLR_C199_2007_amk.jpg) |
+| `sls-amg` | M 93 | CC BY-SA 3.0 de | [File:Mercedes-Benz SLS AMG (C 197) – Frontansicht geöffnet, 10. August 2011, Düsseldorf.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_SLS_AMG_(C_197)_%E2%80%93_Frontansicht_ge%C3%B6ffnet,_10._August_2011,_D%C3%BCsseldorf.jpg) |
+| `ssk` | Rutger van der Maar | CC BY 2.0 | [File:1929 Mercedes-Benz SSK Louwman.jpg](https://commons.wikimedia.org/wiki/File:1929_Mercedes-Benz_SSK_Louwman.jpg) |
+| `w123` | Alexander Migl | CC BY-SA 4.0 | [File:Mercedes-Benz W123 Solitude Revival 2022 1X7A0108.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W123_Solitude_Revival_2022_1X7A0108.jpg) |
 
-36 photographs.
+58 photographs.
