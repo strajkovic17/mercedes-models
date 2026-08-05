@@ -40,6 +40,10 @@ ROOT = Path(__file__).resolve().parent.parent
 MODELS_JS = ROOT / 'assets' / 'js' / 'models.js'
 IMG_DIR = ROOT / 'assets' / 'img'
 CREDITS = IMG_DIR / 'CREDITS.md'
+# Credits accumulate across runs in this sidecar. Rendering CREDITS.md from
+# only the current run silently dropped attribution for models fetched
+# earlier — a licence violation for the CC BY-SA files, which is most of them.
+CREDITS_DATA = IMG_DIR / '.credits.json'
 
 API = 'https://commons.wikimedia.org/w/api.php'
 UNSPLASH_API = 'https://api.unsplash.com'
@@ -325,21 +329,47 @@ def fetch_one(model, width, seen, source):
     return None
 
 
+def load_credits():
+    """Attribution recorded by previous runs, keyed by model id."""
+    if not CREDITS_DATA.exists():
+        return {}
+    try:
+        return json.loads(CREDITS_DATA.read_text(encoding='utf-8'))
+    except (ValueError, OSError):
+        print(f'warning: could not read {CREDITS_DATA.name}, starting fresh')
+        return {}
+
+
 def write_credits(rows):
+    """
+    Persist attribution and re-render CREDITS.md from everything on record.
+
+    Entries whose image no longer exists are dropped, so the table always
+    describes exactly the files in the folder.
+    """
+    rows = {mid: info for mid, info in rows.items()
+            if (IMG_DIR / f'{mid}.jpg').exists()}
+    CREDITS_DATA.write_text(json.dumps(rows, indent=2, sort_keys=True),
+                            encoding='utf-8')
+
     lines = [
         '# Image credits', '',
-        'Photographs fetched from Wikimedia Commons by `tools/fetch-images.py`.',
-        'Each is reproduced under the licence named below; follow the link for the',
-        'full terms and the original file page.', '',
+        'Photographs fetched by `tools/fetch-images.py`. Each is reproduced under',
+        'the licence named below; follow the link for the full terms and the',
+        'original file page.', '',
+        '**CC BY-SA** requires that attribution travels with the image and that',
+        'derivative works carry the same licence. Keep this file alongside them.',
+        '',
         '| Model | Photographer | Licence | Source |',
         '| --- | --- | --- | --- |',
     ]
     for mid, info in sorted(rows.items()):
         art = info['artist'].replace('|', '/')[:70]
         lines.append(
-            f"| `{mid}` | {art} | {info['licence']} | [{info['title']}]({info['descurl']}) |"
+            f"| `{mid}` | {art} | {info['licence']} | "
+            f"[{info['title']}]({info['descurl']}) |"
         )
-    lines.append('')
+    lines += ['', f'{len(rows)} photographs.', '']
     CREDITS.write_text('\n'.join(lines), encoding='utf-8')
 
 
@@ -378,7 +408,8 @@ def main():
     print(f'Fetching photographs for {len(models)} model(s) '
           f'from {args.source} into {IMG_DIR}\n')
 
-    credits, seen, missed = {}, set(), []
+    credits = load_credits()
+    seen, missed = set(), []
     for i, model in enumerate(models, 1):
         dest = IMG_DIR / f"{model['id']}.jpg"
         print(f"[{i}/{len(models)}] {model['name']}")
@@ -395,10 +426,8 @@ def main():
             missed.append(model['id'])
             print('    ✗ no suitable freely-licensed photo found')
 
-    if credits:
-        # Keep credits already on disk for models we skipped this run.
-        write_credits(credits)
-        print(f'\nWrote {CREDITS.relative_to(ROOT)} ({len(credits)} entries)')
+    write_credits(credits)
+    print(f'\nWrote {CREDITS.relative_to(ROOT)} ({len(credits)} entries)')
 
     print(f'\nDone. {len(credits)} fetched, {len(missed)} missing.')
     if missed:

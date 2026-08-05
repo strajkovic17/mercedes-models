@@ -108,7 +108,7 @@ const MODELS = [
       { name: 'AMG C 43 4MATIC', engine: '2.0L turbo I4 + electric exhaust turbo', hp: 402, zeroToSixty: 4.6, price: 62050 },
     ],
     image: 'assets/img/c-class-sedan.jpg',
-    imageSearch: ['Mercedes-Benz W206', 'Mercedes-Benz C-Class 2022'],
+    imageSearch: ['Mercedes-Benz C 200 W206', 'Mercedes-Benz C 300 W206', 'Mercedes-Benz W206'],
   },
   {
     id: 'c-class-estate',
@@ -149,7 +149,7 @@ const MODELS = [
       { name: 'AMG C 43 4MATIC Estate', engine: '2.0L turbo I4 + electric exhaust turbo', hp: 402, zeroToSixty: 4.7, price: 64500 },
     ],
     image: 'assets/img/c-class-estate.jpg',
-    imageSearch: ['Mercedes-Benz S206', 'Mercedes-Benz C-Class estate'],
+    imageSearch: ['Mercedes-Benz C 220 d S206', 'Mercedes-Benz C-Class S206', 'Mercedes-Benz S206'],
   },
   {
     id: 'e-class-sedan',
@@ -889,7 +889,7 @@ const MODELS = [
       { name: 'AMG EQE 4MATIC+', engine: 'Dual motor, AWD', hp: 617, zeroToSixty: 3.2, price: 107400 },
     ],
     image: 'assets/img/eqe-sedan.jpg',
-    imageSearch: ['Mercedes-Benz EQE', 'Mercedes-Benz V295'],
+    imageSearch: ['Mercedes-Benz EQE 350', 'Mercedes-Benz V295', 'Mercedes-Benz EQE'],
   },
   {
     id: 'eqe-suv',
@@ -977,7 +977,7 @@ const MODELS = [
       { name: 'EQS 580 4MATIC', engine: 'Dual motor, AWD', hp: 536, zeroToSixty: 4.1, price: 126400 },
     ],
     image: 'assets/img/eqs-sedan.jpg',
-    imageSearch: ['Mercedes-Benz EQS', 'Mercedes-Benz V297'],
+    imageSearch: ['Mercedes-Benz V297', 'Mercedes-Benz EQS 450', 'Mercedes-Benz EQS 580'],
   },
   {
     id: 'eqs-suv',
@@ -1063,7 +1063,7 @@ const MODELS = [
       { name: 'Maybach EQS 680 SUV', engine: 'Dual motor, AWD', hp: 649, zeroToSixty: 4.1, price: 179900 },
     ],
     image: 'assets/img/maybach-eqs-suv.jpg',
-    imageSearch: ['Mercedes-Maybach EQS SUV', 'Mercedes-Maybach EQS'],
+    imageSearch: ['Mercedes-Maybach EQS 680', 'Mercedes-Maybach EQS SUV'],
   },
   {
     id: 'g-580-eq',
@@ -1522,7 +1522,7 @@ const MODELS = [
       { name: 'AMG S 63 E PERFORMANCE', engine: '4.0L twin-turbo V8 plug-in hybrid', hp: 791, zeroToSixty: 3.2, price: 188250 },
     ],
     image: 'assets/img/amg-s63.jpg',
-    imageSearch: ['Mercedes-AMG S 63'],
+    imageSearch: ['Mercedes-AMG S 63 W223', 'Mercedes-Benz W223 S 63', 'Mercedes-AMG S-Class W223'],
   },
 ];
 
