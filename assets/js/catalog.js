@@ -105,7 +105,7 @@ function cardHTML(m, selected) {
   const badge = badgeFor(m);
   const href = `model.html?id=${encodeURIComponent(m.id)}`;
   return `
-<article class="card">
+<article class="card" data-reveal>
   <a class="card-media" href="${href}" aria-label="${esc(m.name)}">
     <img src="${esc(m.image)}" alt="${esc(m.name)}" loading="lazy" data-model="${esc(m.id)}">
     <span class="badge ${badge.cls}">${esc(badge.text)}</span>
@@ -140,10 +140,12 @@ function render() {
          <button class="btn-reset" type="button" data-reset>Clear all filters</button>
        </div>`;
 
-  // Swap in a silhouette wherever the hotlinked press image fails to load.
+  // Swap in a silhouette wherever a photograph is missing or fails to load.
   for (const img of grid.querySelectorAll('img[data-model]')) {
     attachImageFallback(img, getModel(img.dataset.model));
   }
+  // Cards are rebuilt on every filter change, so re-arm the reveal each time.
+  observeReveals(grid);
 
   resultCount.textContent =
     `${list.length} of ${MODELS.length} model${MODELS.length === 1 ? '' : 's'}`;

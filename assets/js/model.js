@@ -73,7 +73,7 @@ function renderDetail(m) {
   }
 
   detail.innerHTML = `
-<section class="detail-hero">
+<section class="detail-hero page-in">
   <div class="shell">
     <p class="breadcrumb"><a href="index.html">Models</a> &nbsp;/&nbsp; ${esc(m.family)}</p>
     <div class="detail-head">
@@ -93,7 +93,7 @@ function renderDetail(m) {
 </section>
 
 <div class="shell">
-  <div class="keyfigs">
+  <div class="keyfigs" data-reveal>
     <div><strong>${m.kw}</strong><span>kW (${m.ps} PS)</span></div>
     <div><strong>${m.torque}</strong><span>Nm torque</span></div>
     <div><strong>${m.zeroTo100.toFixed(1)}s</strong><span>0–100 km/h</span></div>
@@ -102,7 +102,7 @@ function renderDetail(m) {
     <div><strong>${m.seats}</strong><span>Seats</span></div>
   </div>
 
-  <div class="detail-cols">
+  <div class="detail-cols" data-reveal>
     <div>
       <h2 class="section-title">Overview</h2>
       <p>${esc(m.description)}</p>
@@ -123,7 +123,7 @@ function renderDetail(m) {
     </div>
   </div>
 
-  <section class="detail-section">
+  <section class="detail-section" data-reveal>
     <h2 class="section-title">Variants</h2>
     <div class="table-scroll">
       <table class="variant-table">
@@ -150,7 +150,7 @@ function renderDetail(m) {
     </div>
   </section>
 
-  <section class="detail-section">
+  <section class="detail-section" data-reveal>
     <h2 class="section-title">Full specification</h2>
     <div class="detail-cols" style="padding:0;gap:0 64px">
       ${[0, 1]
@@ -169,7 +169,7 @@ function renderDetail(m) {
     </div>
   </section>
 
-  <section class="detail-section">
+  <section class="detail-section" data-reveal>
     <h2 class="section-title">Elsewhere in the ${esc(m.family)} family</h2>
     <div class="grid" style="margin:0 0 40px">
       ${relatedHTML(m)}
@@ -180,6 +180,7 @@ function renderDetail(m) {
   for (const img of detail.querySelectorAll('img[data-model]')) {
     attachImageFallback(img, getModel(img.dataset.model));
   }
+  observeReveals(detail);
 
   const btn = document.getElementById('btnCompareDetail');
   btn.addEventListener('click', () => {
@@ -209,7 +210,7 @@ function relatedHTML(m) {
   return related
     .map(
       (r) => `
-<article class="card">
+<article class="card" data-reveal>
   <a class="card-media" href="model.html?id=${encodeURIComponent(r.id)}" aria-label="${esc(r.name)}">
     <img src="${esc(r.image)}" alt="${esc(r.name)}" loading="lazy" data-model="${esc(r.id)}">
   </a>

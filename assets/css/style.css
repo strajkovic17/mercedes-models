@@ -31,6 +31,15 @@
   --radius: 3px;
   --shell: 1280px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* iOS safe areas. Held in variables rather than used inline so a test can
+     override them to simulate a notch — env() is always 0 in a desktop
+     browser, which would make this layout impossible to verify otherwise. */
+  --sat: env(safe-area-inset-top, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --header-h: 68px;
 }
 
 *,
@@ -46,6 +55,10 @@ html {
 body {
   margin: 0;
   background: var(--black);
+  /* viewport-fit=cover lets the background reach the notch and the home
+     indicator; without this the browser letterboxes the page in white. */
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
   color: var(--silver);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -76,7 +89,9 @@ h4 {
 .shell {
   max-width: var(--shell);
   margin: 0 auto;
-  padding: 0 32px;
+  /* Clears the rounded corners and the camera housing in landscape. */
+  padding-left: max(32px, var(--sal));
+  padding-right: max(32px, var(--sar));
 }
 
 .eyebrow {
@@ -86,6 +101,56 @@ h4 {
   color: var(--silver-faint);
   font-weight: 500;
 }
+
+/* ── Reveal on scroll ────────────────────────────────────────────────────── */
+/*
+ * Only active once JS adds .has-reveal to <html>. Without that class nothing
+ * is hidden, so a failed script or a crawler still sees the whole page.
+ * The transition lives on the revealed state, so elements animate in and
+ * never animate out.
+ */
+
+.has-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  will-change: opacity, transform;
+}
+
+.has-reveal [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.6s var(--ease) var(--reveal-delay, 0ms),
+    transform 0.6s var(--ease) var(--reveal-delay, 0ms);
+  will-change: auto;
+}
+
+/* The first paint of a page fades up as a whole. */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.page-in {
+  animation: page-in 0.5s var(--ease) both;
+}
+
+/* Cross-document transitions where the browser supports them (Safari 18+,
+   Chrome 126+). Everything above still works where it does not. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: vt-out 0.22s var(--ease) both;
+}
+
+::view-transition-new(root) {
+  animation: vt-in 0.32s var(--ease) both;
+}
+
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; } }
 
 /* ── Star / wordmark ─────────────────────────────────────────────────────── */
 
@@ -116,13 +181,15 @@ h4 {
   background: rgba(10, 10, 11, 0.82);
   backdrop-filter: saturate(160%) blur(14px);
   border-bottom: 1px solid var(--line-soft);
+  /* Blurred bar extends up behind the status bar / Dynamic Island. */
+  padding-top: var(--sat);
 }
 
 .site-header .shell {
   display: flex;
   align-items: center;
   gap: 28px;
-  height: 68px;
+  height: var(--header-h);
 }
 
 .brand {
@@ -248,7 +315,7 @@ h4 {
 
 .filters {
   position: sticky;
-  top: 68px;
+  top: calc(var(--header-h) + var(--sat));
   z-index: 50;
   background: rgba(10, 10, 11, 0.94);
   backdrop-filter: blur(14px);
@@ -860,7 +927,7 @@ input[type='search']::-webkit-search-cancel-button {
 
 .site-footer {
   border-top: 1px solid var(--line-soft);
-  padding: 44px 0;
+  padding: 44px 0 calc(44px + var(--sab));
   font-size: 13px;
   color: var(--silver-faint);
 }
@@ -938,5 +1005,17 @@ input[type='search']::-webkit-search-cancel-button {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Belt and braces: JS also skips observing, but if it ever runs anyway
+     nothing should sit at opacity 0 waiting for a transition. */
+  .has-reveal [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
   }
 }

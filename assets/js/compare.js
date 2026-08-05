@@ -133,7 +133,7 @@ function renderTable() {
           `<td class="${best.has(m.id) ? 'is-best' : ''}">${esc(row.show(m))}</td>`
       )
       .join('');
-    return `<tr><th>${esc(row.label)}</th>${cells}</tr>`;
+    return `<tr data-reveal><th>${esc(row.label)}</th>${cells}</tr>`;
   }).join('');
 
   tableWrap.innerHTML = `
@@ -145,6 +145,7 @@ function renderTable() {
   for (const img of tableWrap.querySelectorAll('img[data-model]')) {
     attachImageFallback(img, getModel(img.dataset.model));
   }
+  observeReveals(tableWrap);
 
   const mixed = new Set(models.map((m) => m.fuel)).size > 1;
   note.textContent = mixed

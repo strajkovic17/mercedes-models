@@ -76,6 +76,61 @@ function toggleCompare(id) {
   return ids.includes(id);
 }
 
+/* ── Reveal on scroll ────────────────────────────────────────────────────── */
+
+let revealObserver = null;
+
+/**
+ * Arm the reveal effect. Called once per page.
+ *
+ * Nothing is hidden until this succeeds — the .has-reveal class on <html> is
+ * what activates the hiding rule — so a browser without IntersectionObserver,
+ * or a reader who has asked for reduced motion, simply sees a static page.
+ */
+function initReveals() {
+  const wantsMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!('IntersectionObserver' in window) || !wantsMotion) return;
+
+  document.documentElement.classList.add('has-reveal');
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-revealed');
+        revealObserver.unobserve(entry.target); // reveal once, then forget it
+      }
+    },
+    // Fire a little before the element is fully on screen, so the motion has
+    // finished by the time it is properly in view.
+    { rootMargin: '0px 0px -6% 0px', threshold: 0.04 }
+  );
+}
+
+/**
+ * Observe everything marked [data-reveal] inside `root`.
+ * Safe to call repeatedly — the grid re-renders on every filter change.
+ */
+function observeReveals(root) {
+  if (!revealObserver) return;
+  const items = (root || document).querySelectorAll('[data-reveal]:not(.is-revealed)');
+  let staggered = 0;
+
+  for (const el of items) {
+    // Anything already scrolled past is shown at once. Without this, changing
+    // a filter while scrolled down leaves the cards above the viewport
+    // invisible — the observer only ever fires on the way in, so scrolling
+    // back up would reveal a column of blanks.
+    if (el.getBoundingClientRect().bottom < 0) {
+      el.classList.add('is-revealed');
+      continue;
+    }
+    // Stagger within a batch, capped so a long list does not crawl.
+    el.style.setProperty('--reveal-delay', `${Math.min(staggered, 7) * 50}ms`);
+    revealObserver.observe(el);
+    staggered++;
+  }
+}
+
 /* ── Header ──────────────────────────────────────────────────────────────── */
 
 const STAR_SVG = `
@@ -116,6 +171,7 @@ function renderFooter() {
 
 /** Keep the header pill in step with the selection, on any page. */
 function mountChrome(current) {
+  initReveals();
   const header = document.getElementById('header');
   const footer = document.getElementById('footer');
   if (header) header.innerHTML = renderHeader(current);
