@@ -399,6 +399,45 @@ def load_credits():
     return recovered
 
 
+def shortlist(models, width, count):
+    """
+    Download several candidates per model without choosing between them.
+
+    Titles alone cannot tell a Gullwing from a roadster, or a good three-
+    quarter view from a bonnet-up shot on a show stand. This writes the top
+    candidates to assets/img/_shortlist/ so they can be looked at and one
+    picked deliberately.
+    """
+    out_dir = IMG_DIR / '_shortlist'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for model in models:
+        print(f"\n{model['name']}")
+        seen, n = set(), 0
+        for term in model['terms']:
+            if n >= count:
+                break
+            try:
+                candidates = commons_candidates(term, width, model.get('exclude', ()))
+            except Exception as exc:
+                print(f'    search failed for "{term}": {exc}')
+                continue
+            for info in candidates:
+                if n >= count or info['key'] in seen:
+                    continue
+                seen.add(info['key'])
+                n += 1
+                dest = out_dir / f"{model['id']}-{n}.jpg"
+                try:
+                    download(info['url'], dest)
+                except Exception as exc:
+                    print(f'    download failed: {exc}')
+                    n -= 1
+                    continue
+                print(f"    {n}. {info['title']}  [{info['licence']}]")
+        if not n:
+            print('    nothing found')
+
+
 def write_credits(rows):
     """
     Persist attribution and re-render CREDITS.md from everything on record.
@@ -440,6 +479,9 @@ def main():
     ap.add_argument('--width', type=int, default=1400, help='target width in pixels')
     ap.add_argument('--source', choices=('commons', 'unsplash'), default='commons',
                     help='where to fetch from (default: commons)')
+    ap.add_argument('--shortlist', type=int, metavar='N',
+                    help='download N candidates per model to assets/img/_shortlist/ '
+                         'for visual review, instead of picking one')
     args = ap.parse_args()
 
     if args.source == 'unsplash':
@@ -464,6 +506,12 @@ def main():
         models = [m for m in models if m['id'] in wanted]
 
     IMG_DIR.mkdir(parents=True, exist_ok=True)
+
+    if args.shortlist:
+        print(f'Shortlisting {args.shortlist} candidates for {len(models)} model(s)')
+        shortlist(models, args.width, args.shortlist)
+        return
+
     print(f'Fetching photographs for {len(models)} model(s) '
           f'from {args.source} into {IMG_DIR}\n')
 

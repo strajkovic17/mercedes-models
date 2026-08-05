@@ -24,6 +24,9 @@ on:
       only:
         description: Space-separated model ids to limit to (blank = all)
         default: ''
+      shortlist:
+        description: Download N candidates per model for review instead of picking one
+        default: ''
 
 permissions:
   contents: write
@@ -50,12 +53,14 @@ jobs:
           WIDTH: ${{ inputs.width }}
           FORCE: ${{ inputs.force }}
           ONLY: ${{ inputs.only }}
+          SHORTLIST: ${{ inputs.shortlist }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: |
           args=(--source "$SOURCE" --width "$WIDTH")
           if [ "$FORCE" = "true" ]; then args+=(--force); fi
           # Unquoted on purpose: this must split into separate ids.
           if [ -n "$ONLY" ]; then args+=(--only $ONLY); fi
+          if [ -n "$SHORTLIST" ]; then args+=(--shortlist "$SHORTLIST"); fi
           python3 tools/fetch-images.py "${args[@]}"
 
       - name: Report what landed
