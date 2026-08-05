@@ -22,6 +22,9 @@ if (!model) {
 function specRows(m) {
   const rows = [
     ['Series', m.series],
+    ...(m.era === 'Classic'
+      ? [['Years built', m.yearsBuilt], ['Period list price', m.periodPrice]]
+      : []),
     ['Body style', m.bodyLabel],
     ['Segment', m.segment],
     ['Powertrain', m.fuels.join(' / ')],
@@ -50,7 +53,7 @@ function specRows(m) {
     ['Wheelbase', `${m.dims.wheelbase} mm`],
     ['Luggage capacity', `${m.cargo} litres`],
     ['Kerb weight', `${m.weight.toLocaleString('de-DE')} kg`],
-    ['In production since', m.intro]
+    [m.era === 'Classic' ? 'Introduced' : 'In production since', m.intro]
   );
 
   return rows;
@@ -82,8 +85,8 @@ function renderDetail(m) {
         <h1>${esc(m.name)}</h1>
       </div>
       <div class="detail-price">
-        <p class="eyebrow">From</p>
-        <strong>${fmtPrice(m.price)}</strong>
+        <p class="eyebrow">${m.era === 'Classic' ? 'Period list price' : 'From'}</p>
+        <strong>${m.era === 'Classic' ? esc(m.periodPrice) : fmtPrice(m.price)}</strong>
       </div>
     </div>
     <div class="detail-media">
@@ -141,7 +144,7 @@ function renderDetail(m) {
             <td>${esc(v.engine)}</td>
             <td>${v.kw} kW (${v.ps} PS)</td>
             <td>${v.zeroTo100.toFixed(1)}s</td>
-            <td>${fmtPrice(v.price)}</td>
+            <td>${v.price === null ? '—' : fmtPrice(v.price)}</td>
           </tr>`
             )
             .join('')}
@@ -221,7 +224,9 @@ function relatedHTML(m) {
     <div class="card-specs">
       <div><strong>${r.kw}</strong><span>kW</span></div>
       <div><strong>${r.zeroTo100.toFixed(1)}s</strong><span>0–100</span></div>
-      <div><strong>${fmtPriceShort(r.price)}</strong><span>From</span></div>
+      ${r.era === 'Classic'
+        ? `<div><strong>${r.intro}</strong><span>Introduced</span></div>`
+        : `<div><strong>${fmtPriceShort(r.price)}</strong><span>From</span></div>`}
     </div>
   </div>
 </article>`

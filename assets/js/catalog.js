@@ -9,6 +9,7 @@ const controls = {
   body: document.getElementById('filterBody'),
   fuel: document.getElementById('filterFuel'),
   family: document.getElementById('filterFamily'),
+  era: document.getElementById('filterEra'),
   seats: document.getElementById('filterSeats'),
   price: document.getElementById('filterPrice'),
   sort: document.getElementById('sortBy'),
@@ -58,6 +59,7 @@ function currentFilters() {
   return {
     q: controls.search.value.trim(),
     body: controls.body.value,
+    era: controls.era.value,
     fuel: controls.fuel.value,
     family: controls.family.value,
     seats: controls.seats.value,
@@ -67,13 +69,14 @@ function currentFilters() {
 }
 
 function isFiltered(f) {
-  return Boolean(f.q || f.body || f.fuel || f.family || f.seats || f.price);
+  return Boolean(f.q || f.body || f.fuel || f.family || f.seats || f.price || f.era);
 }
 
 function applyFilters(f) {
   let out = MODELS.filter((m) => {
     if (!matchesSearch(m, f.q)) return false;
     if (f.body && m.bodyLabel !== f.body) return false;
+    if (f.era && m.era !== f.era) return false;
     if (f.fuel && !m.fuels.includes(f.fuel)) return false;
     if (f.family && m.family !== f.family) return false;
     if (f.seats) {
@@ -82,18 +85,29 @@ function applyFilters(f) {
       if (want === 2 ? m.seats !== 2 : m.seats < want) return false;
     }
     if (f.price) {
+      // Heritage models have no list price, so a price band cannot include them.
+      if (typeof m.price !== 'number') return false;
       const [lo, hi] = f.price.split('-').map(Number);
       if (m.price < lo || m.price > hi) return false;
     }
     return true;
   });
 
+  // Anything without a price sorts to the end rather than to zero.
+  const byPrice = (dir) => (a, b) => {
+    const x = a.price, y = b.price;
+    if (typeof x !== 'number') return typeof y === 'number' ? 1 : 0;
+    if (typeof y !== 'number') return -1;
+    return dir * (x - y);
+  };
   const sorters = {
     name: (a, b) => a.name.localeCompare(b.name),
-    'price-asc': (a, b) => a.price - b.price,
-    'price-desc': (a, b) => b.price - a.price,
+    'price-asc': byPrice(1),
+    'price-desc': byPrice(-1),
     power: (a, b) => b.kw - a.kw,
     quick: (a, b) => a.zeroTo100 - b.zeroTo100,
+    oldest: (a, b) => a.intro - b.intro,
+    newest: (a, b) => b.intro - a.intro,
   };
   out = out.sort(sorters[f.sort] || sorters.name);
   return out;
@@ -117,7 +131,9 @@ function cardHTML(m, selected) {
     <div class="card-specs">
       <div><strong>${m.kw}</strong><span>kW</span></div>
       <div><strong>${m.zeroTo100.toFixed(1)}s</strong><span>0–100 km/h</span></div>
-      <div><strong>${fmtPriceShort(m.price)}</strong><span>From</span></div>
+      ${m.era === 'Classic'
+        ? `<div><strong>${m.intro}</strong><span>Introduced</span></div>`
+        : `<div><strong>${fmtPriceShort(m.price)}</strong><span>From</span></div>`}
     </div>
     <div class="card-actions">
       <a class="card-link" href="${href}">Explore</a>
@@ -156,11 +172,11 @@ function render() {
 
 function renderStats() {
   const variants = MODELS.reduce((n, m) => n + m.variants.length, 0);
-  const diesel = MODELS.filter((m) => m.fuels.includes('Diesel')).length;
+  const classics = MODELS.filter((m) => m.era === 'Classic').length;
   const peak = Math.max(...MODELS.flatMap((m) => m.variants.map((v) => v.kw)));
   document.getElementById('statModels').textContent = MODELS.length;
   document.getElementById('statVariants').textContent = variants;
-  document.getElementById('statDiesel').textContent = diesel;
+  document.getElementById('statClassic').textContent = classics;
   document.getElementById('statPower').textContent = peak.toLocaleString('de-DE');
 }
 
@@ -171,6 +187,7 @@ function resetAll() {
   controls.body.value = '';
   controls.fuel.value = '';
   controls.family.value = '';
+  controls.era.value = '';
   controls.seats.value = '';
   controls.price.value = '';
   render();

@@ -1,8 +1,9 @@
 # Mercedes-Benz — Model Range
 
-A static reference site covering the current (2025/26) Mercedes-Benz passenger-car
-line-up: 36 models across saloons, estates, coupés, cabriolets, SUVs, off-roaders,
-the EQ electric range, Mercedes-AMG and Mercedes-Maybach.
+A static reference site covering 58 Mercedes-Benz models: the current (2025/26)
+passenger-car line-up of 36 — saloons, estates, coupés, cabriolets, SUVs,
+off-roaders, the EQ electric range, Mercedes-AMG and Mercedes-Maybach — plus a
+heritage collection of 22 running from the 1928 SSK to the 2014 SLS AMG.
 
 ## Running it
 
@@ -177,7 +178,13 @@ computes to €162.300 against roughly €160.000 in reality — but treat them 
 order-of-magnitude. The same applies to 0–100 km/h, converted from published
 0–60 mph figures at a flat 5 % rather than measured separately.
 
-Diesel is quoted for the 17 models that offer it in Europe. Each model carries a
+Heritage models carry `era: 'Classic'`, no list price (`price: null`) and a
+`periodPrice` string instead — the 300 SL cost DM 29.000 in 1955, a figure that
+means nothing next to a 2025 euro price and is never compared against one. They
+are excluded from the price bands and sort to the end of a price sort. The era
+filter separates them from the current range.
+
+Diesel is quoted for the 17 current models that offer it in Europe. Each model carries a
 `fuels` array listing every powertrain available for it, which is what the
 powertrain filter matches, so a C-Class appears under both Petrol and Diesel while
 its headline `fuel` stays Petrol.

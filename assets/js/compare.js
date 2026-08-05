@@ -10,7 +10,15 @@ const note = document.getElementById('note');
  * where highlighting a winner would be meaningless.
  */
 const ROWS = [
-  { label: 'Price from', get: (m) => m.price, show: (m) => fmtPrice(m.price), better: -1 },
+  {
+    label: 'Price',
+    get: (m) => m.price,
+    // Heritage models show what they cost when new; there is no winner to
+    // crown between a 1955 list price and a 2025 one.
+    show: (m) => (m.era === 'Classic' ? m.periodPrice : fmtPrice(m.price)),
+    better: -1,
+  },
+  { label: 'Era', get: () => null, show: (m) => (m.era === 'Classic' ? m.yearsBuilt : 'Current'), better: 0 },
   { label: 'Series', get: () => null, show: (m) => m.series, better: 0 },
   { label: 'Body style', get: () => null, show: (m) => m.bodyLabel, better: 0 },
   { label: 'Segment', get: () => null, show: (m) => m.segment, better: 0 },

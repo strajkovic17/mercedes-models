@@ -5,14 +5,22 @@
 
 /* ── Formatting ──────────────────────────────────────────────────────────── */
 
-/* German formatting: 51.700 € — thin space before the symbol, as is standard. */
+/*
+ * German formatting: 51.700 € — thin space before the symbol, as is standard.
+ * Heritage models carry price: null, since they have no list price; callers
+ * fall back to the period price or the years built instead.
+ */
 const fmtPrice = (n) =>
-  n.toLocaleString('de-DE', { maximumFractionDigits: 0 }) + ' €';
+  typeof n === 'number'
+    ? n.toLocaleString('de-DE', { maximumFractionDigits: 0 }) + ' €'
+    : '—';
 
-const fmtPriceShort = (n) =>
-  n >= 1000000
+const fmtPriceShort = (n) => {
+  if (typeof n !== 'number') return '—';
+  return n >= 1000000
     ? (n / 1000000).toFixed(1).replace(/\.0$/, '') + ' Mio. €'
     : Math.round(n / 1000) + '.000 €';
+};
 
 /** Range for an EV, economy for everything else. */
 function rangeOrEconomy(m) {
@@ -21,6 +29,9 @@ function rangeOrEconomy(m) {
 
 /** Badge text and modifier class for a model's powertrain / sub-brand. */
 function badgeFor(m) {
+  // For a car out of production, the years it was built say more than its
+  // powertrain does.
+  if (m.era === 'Classic') return { text: m.yearsBuilt, cls: 'is-classic' };
   if (m.family === 'Maybach') return { text: 'Maybach', cls: '' };
   if (m.family === 'AMG') return { text: 'AMG', cls: 'is-amg' };
   if (m.fuel === 'Electric') return { text: 'Electric', cls: 'is-electric' };

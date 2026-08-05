@@ -494,6 +494,11 @@ input[type='search']::-webkit-search-cancel-button {
   color: #ff5f6b;
 }
 
+.badge.is-classic {
+  border-color: #6d5c3f;
+  color: #d8c49a;
+}
+
 .badge.is-diesel {
   border-color: #7a6a48;
   color: #d3bd85;

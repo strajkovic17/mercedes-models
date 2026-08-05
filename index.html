@@ -24,14 +24,15 @@
       <p class="eyebrow">The current range</p>
       <h1>Every Mercedes-Benz, in one place.</h1>
       <p>
-        Saloons, estates, coupés, cabriolets, SUVs, off-roaders and the full EQ
-        electric line-up — alongside Mercedes-AMG and Mercedes-Maybach. Filter by
-        body style, powertrain or budget, then compare up to three side by side.
+        The current range in full — saloons, estates, coupés, cabriolets, SUVs,
+        off-roaders and the EQ electrics, alongside Mercedes-AMG and
+        Mercedes-Maybach — and a heritage collection running back to 1928.
+        Filter by body style, powertrain, era or budget, then compare any three.
       </p>
       <div class="hero-stats">
         <div><span id="statModels">—</span><small>Models</small></div>
         <div><span id="statVariants">—</span><small>Variants</small></div>
-        <div><span id="statDiesel">—</span><small>Offer diesel</small></div>
+        <div><span id="statClassic">—</span><small>Heritage models</small></div>
         <div><span id="statPower">—</span><small>Peak output, kW</small></div>
       </div>
     </div>
@@ -51,6 +52,11 @@
         <select id="filterBody" aria-label="Body style"><option value="">All body styles</option></select>
         <select id="filterFuel" aria-label="Powertrain"><option value="">All powertrains</option></select>
         <select id="filterFamily" aria-label="Family"><option value="">All families</option></select>
+        <select id="filterEra" aria-label="Era">
+          <option value="">Current and heritage</option>
+          <option value="Current">Current range</option>
+          <option value="Classic">Heritage</option>
+        </select>
         <select id="filterSeats" aria-label="Seats">
           <option value="">Any seat count</option>
           <option value="2">2 seats</option>
@@ -71,6 +77,8 @@
           <option value="price-desc">Price: high to low</option>
           <option value="power">Most powerful</option>
           <option value="quick">Quickest to 100 km/h</option>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
         </select>
       </div>
       <div class="filter-meta">
