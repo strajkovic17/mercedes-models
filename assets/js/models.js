@@ -1896,6 +1896,10 @@ const MODELS = [
     imageSearch: ['Mercedes-Benz 300 SL Flügeltürer', 'Mercedes-Benz 300 SL Coupé W198', 'Mercedes-Benz W198 Coupe'],
     // The roadster shares the name and outnumbers the coupé on Commons.
     imageExclude: ['Roadster', 'Cabrio', 'SLS'],
+    // Search cannot resolve this one: the roadster dominates the results and
+    // Commons even files an R107 under "300 SL". Chosen by eye from a
+    // shortlist — a coupe with both doors raised.
+    imageFile: 'File:Mercedes-Benz Coupé Type 300 SL (1955) jm64494.jpg',
   },
   {
     id: '190-sl',

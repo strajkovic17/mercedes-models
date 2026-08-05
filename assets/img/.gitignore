@@ -3,3 +3,6 @@
 #
 # Populate this folder with tools/fetch-images.py, then commit the results
 # together with CREDITS.md, which carries the attribution those licences require.
+
+# Shortlist candidates are working files for choosing a photograph.
+_shortlist/

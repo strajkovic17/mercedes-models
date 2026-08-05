@@ -141,22 +141,30 @@ def parse_models():
     written in a known shape. If models.js is reformatted, fix this.
     """
     src = MODELS_JS.read_text(encoding='utf-8')
-    out = []
-    for block in re.finditer(
+    blocks = list(re.finditer(
         r"id: '([^']+)',\s*\n\s*name: '((?:[^'\\]|\\.)*)',", src
-    ):
+    ))
+    out = []
+    for i, block in enumerate(blocks):
         mid, name = block.group(1), block.group(2).replace("\\'", "'")
-        tail = src[block.end():block.end() + 6000]
+        # Stop at the next model. A fixed-size lookahead ran past the end of
+        # the entry, so a model with no imageExclude or imageFile silently
+        # inherited the next model's — the Gullwing's pinned file was being
+        # picked up by the two entries above it.
+        end = blocks[i + 1].start() if i + 1 < len(blocks) else len(src)
+        tail = src[block.end():end]
         terms = re.search(r'imageSearch: \[([^\]]*)\]', tail)
         if not terms:
             continue
         parsed = [t.replace("\\'", "'") for t in re.findall(r"'((?:[^'\\]|\\.)*)'", terms.group(1))]
+        pin = re.search(r"imageFile: '((?:[^'\\]|\\.)*)'", tail)
         excl = re.search(r'imageExclude: \[([^\]]*)\]', tail)
         excluded = (
             [t.replace("\\'", "'") for t in re.findall(r"'((?:[^'\\]|\\.)*)'", excl.group(1))]
             if excl else []
         )
-        out.append({'id': mid, 'name': name, 'terms': parsed, 'exclude': excluded})
+        out.append({'id': mid, 'name': name, 'terms': parsed, 'exclude': excluded,
+                    'pin': pin.group(1).replace("\\'", "'") if pin else None})
     return out
 
 
@@ -327,6 +335,28 @@ def unsplash_ping_download(info):
 
 def fetch_one(model, width, seen, source):
     """Walk the model's search terms until one yields a usable photo."""
+    # A pinned file skips searching entirely. Some Commons titles are simply
+    # wrong — an R107 filed as "300 SL" — so for a model where search cannot be
+    # trusted, naming the file is the only reliable answer. Attribution is
+    # still read from the API rather than hard-coded.
+    pin = model.get('pin')
+    if pin and source == 'commons':
+        infos = files_info([pin], width)
+        info = infos.get(pin)
+        if info:
+            dest = IMG_DIR / f"{model['id']}.jpg"
+            try:
+                size = download(info['url'], dest)
+                info['key'] = pin
+                info['source'] = 'Wikimedia Commons'
+                seen.add(pin)
+                print(f"    \u2713 {size // 1024} KB \u2014 pinned: {pin}  [{info['licence']}]")
+                return info
+            except Exception as exc:
+                print(f'    pinned file failed to download: {exc}')
+        else:
+            print(f'    pinned file not usable or not found: {pin}')
+
     if source == 'unsplash':
         terms, produce = unsplash_terms(model), unsplash_candidates
     else:
