@@ -17,7 +17,7 @@ derivative works carry the same licence. Keep this file alongside them.
 | `280-sl-pagoda` | Thesupermat | CC BY-SA 4.0 | [File:Rétromobile 2016 - Mercedes- Benz 280 SL Pagode - 1968 - 002.jpg](https://commons.wikimedia.org/wiki/File:R%C3%A9tromobile_2016_-_Mercedes-_Benz_280_SL_Pagode_-_1968_-_002.jpg) |
 | `300-adenauer` | Ermell | CC BY-SA 4.0 | [File:Mercedes-Benz 300 Limousine (W 186 II) 6280353.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_300_Limousine_(W_186_II)_6280353.jpg) |
 | `300-sel-63` | Mliu92 | CC BY-SA 3.0 | [File:Mercedes Benz 300SEL 6.3 (W109).jpg](https://commons.wikimedia.org/wiki/File:Mercedes_Benz_300SEL_6.3_(W109).jpg) |
-| `300-sl-gullwing` | Spurzem - Lothar Spurzem | CC BY-SA 2.0 de | [File:Mercedes-Benz 300 SLS Cockpit (Umbau SL Roadster) 2009-08-07.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_300_SLS_Cockpit_(Umbau_SL_Roadster)_2009-08-07.jpg) |
+| `300-sl-gullwing` | Lothar Spurzem | CC BY-SA 2.0 de | [File:2007-07-22 Mercedes-Benz 300 SL Roadster (Foto Sp).jpg](https://commons.wikimedia.org/wiki/File:2007-07-22_Mercedes-Benz_300_SL_Roadster_(Foto_Sp).jpg) |
 | `450-sel-69` | Ermell | CC BY-SA 4.0 | [File:Mercedes-Benz W116 Sachs Franken Classic 2018 P5201299.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W116_Sachs_Franken_Classic_2018_P5201299.jpg) |
 | `500e-w124` | Yu Chu Chin | CC BY-SA 4.0 | [File:Mercedes-Benz 500E in Bandar Seri Begawan, Brunei.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_500E_in_Bandar_Seri_Begawan,_Brunei.jpg) |
 | `600-grosser` | Alexander Migl | CC BY-SA 4.0 | [File:Mercedes-Benz W100 600 Classic-Gala 2021 1X7A0194.jpg](https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W100_600_Classic-Gala_2021_1X7A0194.jpg) |
