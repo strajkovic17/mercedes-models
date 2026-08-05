@@ -79,57 +79,71 @@ function toggleCompare(id) {
 /* ── Reveal on scroll ────────────────────────────────────────────────────── */
 
 let revealObserver = null;
+let revealArmed = false;
+
+/** Mark one element as revealed and stop watching it. */
+function reveal(el) {
+  el.classList.add('is-revealed');
+  if (revealObserver) revealObserver.unobserve(el);
+}
+
+/**
+ * Reveal anything at or above the fold.
+ *
+ * This is the reliable path, not a fallback. iOS Safari defers
+ * IntersectionObserver callbacks during momentum scrolling, so relying on the
+ * observer alone means elements pop in after the scroll stops instead of
+ * animating as they arrive — which reads as "the transitions do not work".
+ * Checking positions on scroll, throttled to one animation frame, fires while
+ * the finger is still moving.
+ */
+function revealInView() {
+  const limit = window.innerHeight * 0.94;
+  for (const el of document.querySelectorAll('[data-reveal]:not(.is-revealed)')) {
+    const rect = el.getBoundingClientRect();
+    // On screen, or already scrolled past (a jump can skip an element
+    // entirely, and it must not be stranded invisible).
+    if (rect.top < limit) reveal(el);
+  }
+}
 
 /**
  * Arm the reveal effect. Called once per page.
  *
  * Nothing is hidden until this succeeds — the .has-reveal class on <html> is
- * what activates the hiding rule — so a browser without IntersectionObserver,
- * or a reader who has asked for reduced motion, simply sees a static page.
+ * what activates the hiding rule — so a browser too old for this still shows
+ * the whole page.
+ *
+ * Reduced motion is honoured by dropping the movement, not the effect: the
+ * stylesheet turns it into a plain cross-fade, which carries no motion to be
+ * troubled by. Switching it off entirely, as this used to, meant anyone with
+ * iOS Reduce Motion enabled saw no transitions at all.
  */
 function initReveals() {
-  const wantsMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!('IntersectionObserver' in window) || !wantsMotion) return;
-
+  if (revealArmed) return;
+  revealArmed = true;
   document.documentElement.classList.add('has-reveal');
 
-  // A fast scroll — a jump to an anchor, Cmd+End, or restored scroll position —
-  // can carry an element from below the fold to above it between two observer
-  // ticks. IntersectionObserver never fires in that case (it was not
-  // intersecting before or after), leaving the element invisible for good.
-  // Sweep once the scrolling settles and reveal anything already passed.
-  let sweepTimer = null;
-  addEventListener(
-    'scroll',
-    () => {
-      clearTimeout(sweepTimer);
-      sweepTimer = setTimeout(revealPassed, 150);
-    },
-    { passive: true }
-  );
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      revealInView();
+    });
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll, { passive: true });
+  addEventListener('orientationchange', onScroll, { passive: true });
 
-  revealObserver = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.classList.add('is-revealed');
-        revealObserver.unobserve(entry.target); // reveal once, then forget it
-      }
-    },
-    // Fire a little before the element is fully on screen, so the motion has
-    // finished by the time it is properly in view.
-    { rootMargin: '0px 0px -6% 0px', threshold: 0.04 }
-  );
-}
-
-/** Reveal anything scrolled past that the observer missed. */
-function revealPassed() {
-  if (!revealObserver) return;
-  for (const el of document.querySelectorAll('[data-reveal]:not(.is-revealed)')) {
-    if (el.getBoundingClientRect().bottom < 0) {
-      el.classList.add('is-revealed');
-      revealObserver.unobserve(el);
-    }
+  if ('IntersectionObserver' in window) {
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) if (entry.isIntersecting) reveal(entry.target);
+      },
+      { rootMargin: '0px 0px -6% 0px', threshold: 0.02 }
+    );
   }
 }
 
@@ -138,24 +152,19 @@ function revealPassed() {
  * Safe to call repeatedly — the grid re-renders on every filter change.
  */
 function observeReveals(root) {
-  if (!revealObserver) return;
+  if (!revealArmed) return;
   const items = (root || document).querySelectorAll('[data-reveal]:not(.is-revealed)');
   let staggered = 0;
 
   for (const el of items) {
-    // Anything already scrolled past is shown at once. Without this, changing
-    // a filter while scrolled down leaves the cards above the viewport
-    // invisible — the observer only ever fires on the way in, so scrolling
-    // back up would reveal a column of blanks.
-    if (el.getBoundingClientRect().bottom < 0) {
-      el.classList.add('is-revealed');
-      continue;
-    }
     // Stagger within a batch, capped so a long list does not crawl.
-    el.style.setProperty('--reveal-delay', `${Math.min(staggered, 7) * 50}ms`);
-    revealObserver.observe(el);
+    el.style.setProperty('--reveal-delay', `${Math.min(staggered, 7) * 60}ms`);
+    if (revealObserver) revealObserver.observe(el);
     staggered++;
   }
+  // Anything already on screen or scrolled past is revealed now, so a filter
+  // change while scrolled down never leaves blank cards behind the reader.
+  requestAnimationFrame(revealInView);
 }
 
 /* ── Header ──────────────────────────────────────────────────────────────── */
