@@ -1846,7 +1846,7 @@ const MODELS = [
       { name: '300 S', engine: '3.0L M188 I6', kw: 110, ps: 150, zeroTo100: 15.0, price: null },
     ],
     image: 'assets/img/300-adenauer.jpg',
-    imageSearch: ['Mercedes-Benz W186', 'Mercedes-Benz 300 Adenauer'],
+    imageSearch: ['Mercedes-Benz 300 Limousine W186', 'Mercedes-Benz Adenauer Limousine', 'Mercedes-Benz W186 300'],
   },
   {
     id: '300-sl-gullwing',
@@ -1889,7 +1889,7 @@ const MODELS = [
       { name: '300 SL Coupé', engine: '3.0L M198 I6', kw: 158, ps: 215, zeroTo100: 8.8, price: null },
     ],
     image: 'assets/img/300-sl-gullwing.jpg',
-    imageSearch: ['Mercedes-Benz W198', 'Mercedes-Benz 300 SL Gullwing'],
+    imageSearch: ['Mercedes-Benz 300 SL Flügeltürer', 'Mercedes-Benz 300 SL Coupé W198', 'Mercedes-Benz W198 Coupe'],
   },
   {
     id: '190-sl',
@@ -2065,7 +2065,7 @@ const MODELS = [
       { name: '280 SL', engine: '2.8L M130 I6', kw: 125, ps: 170, zeroTo100: 9.9, price: null },
     ],
     image: 'assets/img/280-sl-pagoda.jpg',
-    imageSearch: ['Mercedes-Benz W113', 'Mercedes-Benz 280 SL Pagoda'],
+    imageSearch: ['Mercedes-Benz 280 SL Pagode', 'Mercedes-Benz W113 280 SL', 'Mercedes-Benz Pagode'],
   },
   {
     id: '300-sel-63',
@@ -2335,7 +2335,7 @@ const MODELS = [
       { name: '560 SEL', engine: '5.6L M117 V8', kw: 220, ps: 300, zeroTo100: 7.0, price: null },
     ],
     image: 'assets/img/s-w126.jpg',
-    imageSearch: ['Mercedes-Benz W126', 'Mercedes-Benz 500 SEL'],
+    imageSearch: ['Mercedes-Benz 560 SEL W126', 'Mercedes-Benz 500 SE W126', 'Mercedes-Benz S-Klasse W126'],
   },
   {
     id: '190e-evo2',
