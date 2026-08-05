@@ -92,6 +92,22 @@ function initReveals() {
   if (!('IntersectionObserver' in window) || !wantsMotion) return;
 
   document.documentElement.classList.add('has-reveal');
+
+  // A fast scroll — a jump to an anchor, Cmd+End, or restored scroll position —
+  // can carry an element from below the fold to above it between two observer
+  // ticks. IntersectionObserver never fires in that case (it was not
+  // intersecting before or after), leaving the element invisible for good.
+  // Sweep once the scrolling settles and reveal anything already passed.
+  let sweepTimer = null;
+  addEventListener(
+    'scroll',
+    () => {
+      clearTimeout(sweepTimer);
+      sweepTimer = setTimeout(revealPassed, 150);
+    },
+    { passive: true }
+  );
+
   revealObserver = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
@@ -104,6 +120,17 @@ function initReveals() {
     // finished by the time it is properly in view.
     { rootMargin: '0px 0px -6% 0px', threshold: 0.04 }
   );
+}
+
+/** Reveal anything scrolled past that the observer missed. */
+function revealPassed() {
+  if (!revealObserver) return;
+  for (const el of document.querySelectorAll('[data-reveal]:not(.is-revealed)')) {
+    if (el.getBoundingClientRect().bottom < 0) {
+      el.classList.add('is-revealed');
+      revealObserver.unobserve(el);
+    }
+  }
 }
 
 /**

@@ -133,11 +133,11 @@ function renderTable() {
           `<td class="${best.has(m.id) ? 'is-best' : ''}">${esc(row.show(m))}</td>`
       )
       .join('');
-    return `<tr data-reveal><th>${esc(row.label)}</th>${cells}</tr>`;
+    return `<tr><th>${esc(row.label)}</th>${cells}</tr>`;
   }).join('');
 
   tableWrap.innerHTML = `
-<table class="compare-table">
+<table class="compare-table" data-reveal>
   <thead><tr><th></th>${head}</tr></thead>
   <tbody>${body}</tbody>
 </table>`;
