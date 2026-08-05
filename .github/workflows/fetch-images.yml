@@ -21,6 +21,9 @@ on:
         description: Replace photographs that are already committed
         type: boolean
         default: false
+      only:
+        description: Space-separated model ids to limit to (blank = all)
+        default: ''
 
 permissions:
   contents: write
@@ -46,10 +49,13 @@ jobs:
           SOURCE: ${{ inputs.source }}
           WIDTH: ${{ inputs.width }}
           FORCE: ${{ inputs.force }}
+          ONLY: ${{ inputs.only }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: |
           args=(--source "$SOURCE" --width "$WIDTH")
           if [ "$FORCE" = "true" ]; then args+=(--force); fi
+          # Unquoted on purpose: this must split into separate ids.
+          if [ -n "$ONLY" ]; then args+=(--only $ONLY); fi
           python3 tools/fetch-images.py "${args[@]}"
 
       - name: Report what landed
