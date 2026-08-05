@@ -151,7 +151,12 @@ def parse_models():
         if not terms:
             continue
         parsed = [t.replace("\\'", "'") for t in re.findall(r"'((?:[^'\\]|\\.)*)'", terms.group(1))]
-        out.append({'id': mid, 'name': name, 'terms': parsed})
+        excl = re.search(r'imageExclude: \[([^\]]*)\]', tail)
+        excluded = (
+            [t.replace("\\'", "'") for t in re.findall(r"'((?:[^'\\]|\\.)*)'", excl.group(1))]
+            if excl else []
+        )
+        out.append({'id': mid, 'name': name, 'terms': parsed, 'exclude': excluded})
     return out
 
 
@@ -216,9 +221,18 @@ def download(url, dest):
     return len(data)
 
 
-def commons_candidates(term, width):
-    """Candidate photos from Wikimedia Commons for one search term."""
-    titles = search_files(term)
+def commons_candidates(term, width, exclude=()):
+    """
+    Candidate photos from Wikimedia Commons for one search term.
+
+    `exclude` drops titles naming a different body style that shares the
+    model's name — a 300 SL Roadster is not a Gullwing, and Commons holds far
+    more of the former.
+    """
+    titles = [
+        t for t in search_files(term)
+        if not any(x.lower() in t.lower() for x in exclude)
+    ]
     infos = files_info(titles, width)
     out = []
     for title in titles:                 # keep the search's relevance order
@@ -320,7 +334,8 @@ def fetch_one(model, width, seen, source):
 
     for term in terms:
         try:
-            candidates = produce(term, width)
+            candidates = (produce(term, width, model.get('exclude', ()))
+                          if source == 'commons' else produce(term, width))
         except RuntimeError:
             raise  # missing API key — fatal, not worth retrying 36 times
         except Exception as exc:

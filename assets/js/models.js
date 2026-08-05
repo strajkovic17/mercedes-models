@@ -402,6 +402,7 @@ const MODELS = [
     ],
     image: 'assets/img/cle-coupe.jpg',
     imageSearch: ['Mercedes-Benz C236', 'Mercedes-Benz CLE coupe'],
+    imageExclude: ['Cabriolet'],
   },
   {
     id: 'cle-cabriolet',
@@ -629,6 +630,7 @@ const MODELS = [
     ],
     image: 'assets/img/glc-suv.jpg',
     imageSearch: ['Mercedes-Benz X254', 'Mercedes-Benz GLC 2023'],
+    imageExclude: ['Coupe', 'Coupé'],
   },
   {
     id: 'glc-coupe',
@@ -720,6 +722,7 @@ const MODELS = [
     ],
     image: 'assets/img/gle-suv.jpg',
     imageSearch: ['Mercedes-Benz W167', 'Mercedes-Benz GLE'],
+    imageExclude: ['Coupe', 'Coupé'],
   },
   {
     id: 'gle-coupe',
@@ -1360,6 +1363,7 @@ const MODELS = [
     ],
     image: 'assets/img/amg-gt-coupe.jpg',
     imageSearch: ['Mercedes-AMG GT C192', 'Mercedes-AMG GT 2024'],
+    imageExclude: ['Roadster'],
   },
   {
     id: 'amg-one',
@@ -1890,6 +1894,8 @@ const MODELS = [
     ],
     image: 'assets/img/300-sl-gullwing.jpg',
     imageSearch: ['Mercedes-Benz 300 SL Flügeltürer', 'Mercedes-Benz 300 SL Coupé W198', 'Mercedes-Benz W198 Coupe'],
+    // The roadster shares the name and outnumbers the coupé on Commons.
+    imageExclude: ['Roadster', 'Cabrio', 'SLS'],
   },
   {
     id: '190-sl',
@@ -2470,6 +2476,7 @@ const MODELS = [
     ],
     image: 'assets/img/sl-r129.jpg',
     imageSearch: ['Mercedes-Benz R129', 'Mercedes-Benz SL 500 R129'],
+    imageExclude: ['R107', 'R230'],
   },
   {
     id: 's-w140',
