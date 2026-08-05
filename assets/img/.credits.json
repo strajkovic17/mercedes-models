@@ -1,4 +1,76 @@
 {
+  "a-class-sedan": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_A_250_e_(V177,_2022",
+    "key": "File:Mercedes-Benz A 250 e (V177, 2022) 1X7A1651.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz A 250 e (V177, 2022) 1X7A1651.jpg",
+    "url": ""
+  },
+  "amg-c63": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_C_63_(W206",
+    "key": "File:Mercedes-AMG C 63 (W206) IMG 0305.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-AMG C 63 (W206) IMG 0305.jpg",
+    "url": ""
+  },
+  "amg-e53": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_W214_53_Hybrid_IMG_1305.jpg",
+    "key": "File:Mercedes-AMG W214 53 Hybrid IMG 1305.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-AMG W214 53 Hybrid IMG 1305.jpg",
+    "url": ""
+  },
+  "amg-g63": {
+    "artist": "Alexander Migl",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_G_63_(2018",
+    "key": "File:Mercedes-AMG G 63 (2018) IMG 4370.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-AMG G 63 (2018) IMG 4370.jpg",
+    "url": ""
+  },
+  "amg-glc63": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_GLC_63_(X254",
+    "key": "File:Mercedes-AMG GLC 63 (X254) IMG 0288.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-AMG GLC 63 (X254) IMG 0288.jpg",
+    "url": ""
+  },
+  "amg-gle63": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_GLE_63_S_4MATIC_IMG_1288.jpg",
+    "key": "File:Mercedes-AMG GLE 63 S 4MATIC IMG 1288.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-AMG GLE 63 S 4MATIC IMG 1288.jpg",
+    "url": ""
+  },
+  "amg-gt-coupe": {
+    "artist": "Alexander Migl",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_GT_43_(C192",
+    "key": "File:Mercedes-AMG GT 43 (C192) IMG 2893.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-AMG GT 43 (C192) IMG 2893.jpg",
+    "url": ""
+  },
+  "amg-one": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_One_IAA_2023_1X7A0454.jpg",
+    "key": "File:Mercedes-AMG One IAA 2023 1X7A0454.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-AMG One IAA 2023 1X7A0454.jpg",
+    "url": ""
+  },
   "amg-s63": {
     "artist": "Alexander-93",
     "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_S_63_(W223)_IMG_8215.jpg",
@@ -7,6 +79,15 @@
     "source": "Wikimedia Commons",
     "title": "File:Mercedes-AMG S 63 (W223) IMG 8215.jpg",
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Mercedes-AMG_S_63_%28W223%29_IMG_8215.jpg/1920px-Mercedes-AMG_S_63_%28W223%29_IMG_8215.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "amg-sl": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_SL_63_(R232",
+    "key": "File:Mercedes-AMG SL 63 (R232) 1X7A7444.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-AMG SL 63 (R232) 1X7A7444.jpg",
+    "url": ""
   },
   "c-class-estate": {
     "artist": "Tokumeigakarinoaoshima",
@@ -26,6 +107,69 @@
     "title": "File:Mercedes-Benz C 200 AVANTGARDE (W206) rear.jpg",
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Mercedes-Benz_C_200_AVANTGARDE_%28W206%29_rear.jpg/1920px-Mercedes-Benz_C_200_AVANTGARDE_%28W206%29_rear.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
+  "cla-coupe": {
+    "artist": "Alexander Migl",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_C118_IMG_4172.jpg",
+    "key": "File:Mercedes-Benz C118 IMG 4172.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz C118 IMG 4172.jpg",
+    "url": ""
+  },
+  "cla-eq": {
+    "artist": "JustAnotherCarDesigner",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_Electric_CLA_001.jpg",
+    "key": "File:Mercedes-Benz Electric CLA 001.jpg",
+    "licence": "CC0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz Electric CLA 001.jpg",
+    "url": ""
+  },
+  "cle-cabriolet": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_A236_IMG_0490.jpg",
+    "key": "File:Mercedes-Benz A236 IMG 0490.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz A236 IMG 0490.jpg",
+    "url": ""
+  },
+  "cle-coupe": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_C236_1X7A1685.jpg",
+    "key": "File:Mercedes-Benz C236 1X7A1685.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz C236 1X7A1685.jpg",
+    "url": ""
+  },
+  "e-class-all-terrain": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_S214_300e_1X7A1754.jpg",
+    "key": "File:Mercedes-Benz S214 300e 1X7A1754.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz S214 300e 1X7A1754.jpg",
+    "url": ""
+  },
+  "e-class-sedan": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W214_1X7A1843.jpg",
+    "key": "File:Mercedes-Benz W214 1X7A1843.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz W214 1X7A1843.jpg",
+    "url": ""
+  },
+  "eqb": {
+    "artist": "Dinkun Chen",
+    "descurl": "https://commons.wikimedia.org/wiki/File:MERCEDES-EQ_EQB_China_(4",
+    "key": "File:MERCEDES-EQ EQB China (4).jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:MERCEDES-EQ EQB China (4).jpg",
+    "url": ""
+  },
   "eqe-sedan": {
     "artist": "\u00a9 M 93",
     "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_EQE_350%2B_AMG_Line_(V_295)_%E2%80%93_f_12022023.jpg",
@@ -34,6 +178,15 @@
     "source": "Wikimedia Commons",
     "title": "File:Mercedes-Benz EQE 350+ AMG Line (V 295) \u2013 f 12022023.jpg",
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Mercedes-Benz_EQE_350%2B_AMG_Line_%28V_295%29_%E2%80%93_f_12022023.jpg/1920px-Mercedes-Benz_EQE_350%2B_AMG_Line_%28V_295%29_%E2%80%93_f_12022023.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "eqe-suv": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-AMG_EQE_SUV_43_(X294",
+    "key": "File:Mercedes-AMG EQE SUV 43 (X294) IAA 2023 1X7A0449.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-AMG EQE SUV 43 (X294) IAA 2023 1X7A0449.jpg",
+    "url": ""
   },
   "eqs-sedan": {
     "artist": "Alexander Migl",
@@ -44,6 +197,96 @@
     "title": "File:Mercedes-Benz V297 IAA 2021 1X7A0251.jpg",
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Mercedes-Benz_V297_IAA_2021_1X7A0251.jpg/1920px-Mercedes-Benz_V297_IAA_2021_1X7A0251.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
+  "eqs-suv": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_X296_1X7A1725.jpg",
+    "key": "File:Mercedes-Benz X296 1X7A1725.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz X296 1X7A1725.jpg",
+    "url": ""
+  },
+  "g-580-eq": {
+    "artist": "Alexander Migl",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_G_580_with_EQ_Technology_DSC_8257.jpg",
+    "key": "File:Mercedes-Benz G 580 with EQ Technology DSC 8257.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz G 580 with EQ Technology DSC 8257.jpg",
+    "url": ""
+  },
+  "g-class": {
+    "artist": "Alexander Migl",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W465_DSC_8927.jpg",
+    "key": "File:Mercedes-Benz W465 DSC 8927.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz W465 DSC 8927.jpg",
+    "url": ""
+  },
+  "gla": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_H247_(2023",
+    "key": "File:Mercedes-Benz H247 (2023) IMG 8549.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz H247 (2023) IMG 8549.jpg",
+    "url": ""
+  },
+  "glb": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_X247_(2023",
+    "key": "File:Mercedes-Benz X247 (2023) IMG 8666.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz X247 (2023) IMG 8666.jpg",
+    "url": ""
+  },
+  "glc-coupe": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_C254_220d_1X7A1738.jpg",
+    "key": "File:Mercedes-Benz C254 220d 1X7A1738.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz C254 220d 1X7A1738.jpg",
+    "url": ""
+  },
+  "glc-suv": {
+    "artist": "Alexander Migl",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_X254_1X7A6345.jpg",
+    "key": "File:Mercedes-Benz X254 1X7A6345.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz X254 1X7A6345.jpg",
+    "url": ""
+  },
+  "gle-coupe": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:2023_Mercedes-Benz_C167_450d_1X7A1712.jpg",
+    "key": "File:2023 Mercedes-Benz C167 450d 1X7A1712.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:2023 Mercedes-Benz C167 450d 1X7A1712.jpg",
+    "url": ""
+  },
+  "gle-suv": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W167_IMG_9242.jpg",
+    "key": "File:Mercedes-Benz W167 IMG 9242.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz W167 IMG 9242.jpg",
+    "url": ""
+  },
+  "gls": {
+    "artist": "Alexander-93",
+    "descurl": "https://commons.wikimedia.org/wiki/File:2023_Mercedes-Benz_X167_IMG_0238.jpg",
+    "key": "File:2023 Mercedes-Benz X167 IMG 0238.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:2023 Mercedes-Benz X167 IMG 0238.jpg",
+    "url": ""
+  },
   "maybach-eqs-suv": {
     "artist": "Oleg Yunakov",
     "descurl": "https://commons.wikimedia.org/wiki/File:2025_Mercedes-Maybach_EQS_680_SUV_-_02.jpg",
@@ -52,5 +295,32 @@
     "source": "Wikimedia Commons",
     "title": "File:2025 Mercedes-Maybach EQS 680 SUV - 02.jpg",
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/2025_Mercedes-Maybach_EQS_680_SUV_-_02.jpg/1920px-2025_Mercedes-Maybach_EQS_680_SUV_-_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "maybach-gls": {
+    "artist": "Dinkun Chen",
+    "descurl": "https://commons.wikimedia.org/wiki/File:MERCEDES_MAYBACH_GLS_China.jpg",
+    "key": "File:MERCEDES MAYBACH GLS China.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:MERCEDES MAYBACH GLS China.jpg",
+    "url": ""
+  },
+  "maybach-s-class": {
+    "artist": "Alexander Migl",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Maybach_Z223_680_IAA_2021_1X7A0287.jpg",
+    "key": "File:Mercedes-Maybach Z223 680 IAA 2021 1X7A0287.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Maybach Z223 680 IAA 2021 1X7A0287.jpg",
+    "url": ""
+  },
+  "s-class-sedan": {
+    "artist": "Alexander Migl",
+    "descurl": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W223_IAA_2021_1X7A0206.jpg",
+    "key": "File:Mercedes-Benz W223 IAA 2021 1X7A0206.jpg",
+    "licence": "CC BY-SA 4.0",
+    "source": "Wikimedia Commons",
+    "title": "File:Mercedes-Benz W223 IAA 2021 1X7A0206.jpg",
+    "url": ""
   }
 }

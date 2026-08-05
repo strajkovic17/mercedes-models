@@ -329,15 +329,45 @@ def fetch_one(model, width, seen, source):
     return None
 
 
+def parse_credits_md():
+    """
+    Recover attribution by reading CREDITS.md back.
+
+    The sidecar was introduced after the first fetches, so a checkout can hold
+    a populated CREDITS.md and no sidecar. Starting empty in that case silently
+    strips attribution from every image not touched by the current run — which
+    for CC BY-SA files breaks the licence. Read the table instead.
+    """
+    if not CREDITS.exists():
+        return {}
+    out = {}
+    for line in CREDITS.read_text(encoding='utf-8').splitlines():
+        if not line.lstrip().startswith('| `'):
+            continue
+        cells = [c.strip() for c in line.strip().strip('|').split('|')]
+        if len(cells) < 4:
+            continue
+        link = re.match(r'\[(.*?)\]\((.*?)\)', cells[3])
+        out[cells[0].strip('`')] = {
+            'title': link.group(1) if link else cells[3],
+            'descurl': link.group(2) if link else '',
+            'artist': cells[1], 'licence': cells[2],
+            'url': '', 'key': link.group(1) if link else cells[0],
+            'source': 'Wikimedia Commons',
+        }
+    return out
+
+
 def load_credits():
     """Attribution recorded by previous runs, keyed by model id."""
-    if not CREDITS_DATA.exists():
-        return {}
-    try:
-        return json.loads(CREDITS_DATA.read_text(encoding='utf-8'))
-    except (ValueError, OSError):
-        print(f'warning: could not read {CREDITS_DATA.name}, starting fresh')
-        return {}
+    recovered = parse_credits_md()
+    if CREDITS_DATA.exists():
+        try:
+            recovered.update(json.loads(CREDITS_DATA.read_text(encoding='utf-8')))
+        except (ValueError, OSError):
+            print(f'warning: could not read {CREDITS_DATA.name}, '
+                  f'falling back to {CREDITS.name}')
+    return recovered
 
 
 def write_credits(rows):
