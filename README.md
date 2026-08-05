@@ -153,11 +153,34 @@ statistics, comparison rows and related-model sections are all derived from the
 data, so nothing else needs touching. `id` must be unique — it is what `model.html`
 deep-links to, and a duplicate is reported in the browser console.
 
-## Figures
+## Figures and units
 
-Specifications are manufacturer/press figures for the US market, in imperial units.
-Prices are MSRP in USD excluding destination, taxes and options, and will drift
-from what dealers actually quote.
+Everything is metric, as sold in Europe:
+
+| Quantity | Unit |
+| --- | --- |
+| Power | kW, with PS in brackets |
+| Torque | Nm |
+| Acceleration | 0–100 km/h |
+| Top speed | km/h |
+| Consumption | L/100 km (WLTP), or kWh/100 km for electric |
+| Range | km |
+| Dimensions | mm |
+| Luggage | litres |
+| Kerb weight | kg |
+| Price | EUR, German list, including 19 % VAT |
+
+**Prices are indicative, not quotations.** They are derived from US MSRP via
+currency conversion plus German VAT, rounded to the nearest €100, rather than
+taken from a German price list. They land close to real list prices — the G 500
+computes to €162.300 against roughly €160.000 in reality — but treat them as
+order-of-magnitude. The same applies to 0–100 km/h, converted from published
+0–60 mph figures at a flat 5 % rather than measured separately.
+
+Diesel is quoted for the 17 models that offer it in Europe. Each model carries a
+`fuels` array listing every powertrain available for it, which is what the
+powertrain filter matches, so a C-Class appears under both Petrol and Diesel while
+its headline `fuel` stays Petrol.
 
 This is an independent reference and is not affiliated with or endorsed by
 Mercedes-Benz Group AG.

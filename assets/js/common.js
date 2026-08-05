@@ -5,17 +5,18 @@
 
 /* ── Formatting ──────────────────────────────────────────────────────────── */
 
+/* German formatting: 51.700 € — thin space before the symbol, as is standard. */
 const fmtPrice = (n) =>
-  '$' + n.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  n.toLocaleString('de-DE', { maximumFractionDigits: 0 }) + ' €';
 
 const fmtPriceShort = (n) =>
   n >= 1000000
-    ? '$' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
-    : '$' + Math.round(n / 1000) + 'k';
+    ? (n / 1000000).toFixed(1).replace(/\.0$/, '') + ' Mio. €'
+    : Math.round(n / 1000) + '.000 €';
 
 /** Range for an EV, economy for everything else. */
 function rangeOrEconomy(m) {
-  return m.range && m.fuel === 'Electric' ? `${m.range} mi` : m.economy;
+  return m.range && m.fuel === 'Electric' ? `${m.range} km` : m.economy;
 }
 
 /** Badge text and modifier class for a model's powertrain / sub-brand. */
@@ -24,6 +25,7 @@ function badgeFor(m) {
   if (m.family === 'AMG') return { text: 'AMG', cls: 'is-amg' };
   if (m.fuel === 'Electric') return { text: 'Electric', cls: 'is-electric' };
   if (m.fuel === 'Plug-in Hybrid') return { text: 'Hybrid', cls: 'is-hybrid' };
+  if (m.fuels.includes('Diesel')) return { text: 'Petrol / Diesel', cls: 'is-diesel' };
   return { text: m.bodyLabel, cls: '' };
 }
 

@@ -39,7 +39,7 @@ function matchesSearch(m, q) {
     m.series,
     m.bodyLabel,
     m.segment,
-    m.fuel,
+    m.fuels.join(' '),
     m.engine,
     m.tagline,
     ...m.variants.map((v) => `${v.name} ${v.engine}`),
@@ -74,7 +74,7 @@ function applyFilters(f) {
   let out = MODELS.filter((m) => {
     if (!matchesSearch(m, f.q)) return false;
     if (f.body && m.bodyLabel !== f.body) return false;
-    if (f.fuel && m.fuel !== f.fuel) return false;
+    if (f.fuel && !m.fuels.includes(f.fuel)) return false;
     if (f.family && m.family !== f.family) return false;
     if (f.seats) {
       const want = Number(f.seats);
@@ -92,8 +92,8 @@ function applyFilters(f) {
     name: (a, b) => a.name.localeCompare(b.name),
     'price-asc': (a, b) => a.price - b.price,
     'price-desc': (a, b) => b.price - a.price,
-    power: (a, b) => b.hp - a.hp,
-    quick: (a, b) => a.zeroToSixty - b.zeroToSixty,
+    power: (a, b) => b.kw - a.kw,
+    quick: (a, b) => a.zeroTo100 - b.zeroTo100,
   };
   out = out.sort(sorters[f.sort] || sorters.name);
   return out;
@@ -115,8 +115,8 @@ function cardHTML(m, selected) {
     <p class="card-series">${esc(m.series)} · ${esc(m.segment)}</p>
     <p class="card-tagline">${esc(m.tagline)}</p>
     <div class="card-specs">
-      <div><strong>${m.hp}</strong><span>hp</span></div>
-      <div><strong>${m.zeroToSixty.toFixed(1)}s</strong><span>0–60 mph</span></div>
+      <div><strong>${m.kw}</strong><span>kW</span></div>
+      <div><strong>${m.zeroTo100.toFixed(1)}s</strong><span>0–100 km/h</span></div>
       <div><strong>${fmtPriceShort(m.price)}</strong><span>From</span></div>
     </div>
     <div class="card-actions">
@@ -154,12 +154,12 @@ function render() {
 
 function renderStats() {
   const variants = MODELS.reduce((n, m) => n + m.variants.length, 0);
-  const electric = MODELS.filter((m) => m.fuel === 'Electric').length;
-  const peak = Math.max(...MODELS.flatMap((m) => m.variants.map((v) => v.hp)));
+  const diesel = MODELS.filter((m) => m.fuels.includes('Diesel')).length;
+  const peak = Math.max(...MODELS.flatMap((m) => m.variants.map((v) => v.kw)));
   document.getElementById('statModels').textContent = MODELS.length;
   document.getElementById('statVariants').textContent = variants;
-  document.getElementById('statElectric').textContent = electric;
-  document.getElementById('statPower').textContent = peak.toLocaleString('en-US');
+  document.getElementById('statDiesel').textContent = diesel;
+  document.getElementById('statPower').textContent = peak.toLocaleString('de-DE');
 }
 
 /* ── Events ──────────────────────────────────────────────────────────────── */

@@ -426,6 +426,11 @@ input[type='search']::-webkit-search-cancel-button {
   color: #ff5f6b;
 }
 
+.badge.is-diesel {
+  border-color: #7a6a48;
+  color: #d3bd85;
+}
+
 .badge.is-hybrid {
   border-color: var(--accent-dim);
   color: #4cc7f2;
