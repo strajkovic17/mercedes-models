@@ -65,6 +65,18 @@ OK_LICENCE = re.compile(
 )
 BAD_LICENCE = re.compile(r'(non[- ]?commercial|no[- ]?deriv|fair use|\bnc\b|\bnd\b)', re.I)
 
+# Titles that describe part of a car rather than the car. A cockpit or a
+# badge is a perfectly good photograph and a useless catalogue thumbnail —
+# the Gullwing kept matching an interior shot of a roadster conversion.
+# German terms included because Commons files a lot of these in German.
+DETAIL_SHOT = re.compile(
+    r'\b(cockpit|interior|innenraum|dashboard|armaturen|instrument|'
+    r'engine|motorraum|umbau|replica|nachbau|emblem|logo|badge|stern|'
+    r'wheel|felge|steering|lenkrad|seat|sitz|headlight|scheinwerfer|'
+    r'taillight|heckleuchte|detail|grille|k\u00fchlergrill|chassis|frame)\b',
+    re.I,
+)
+
 
 def _pace():
     """Keep at least MIN_INTERVAL between any two outbound requests."""
@@ -170,6 +182,8 @@ def files_info(titles, width):
     for page in data.get('query', {}).get('pages', []):
         if page.get('missing') or 'imageinfo' not in page:
             continue
+        if DETAIL_SHOT.search(page.get('title', '')):
+            continue  # a close-up of one part, not the car
         info = page['imageinfo'][0]
         if info.get('mime') not in ('image/jpeg', 'image/png'):
             continue
